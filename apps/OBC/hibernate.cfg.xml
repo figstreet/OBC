@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"https://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- Database Connection Params - SQLServer -->
+		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+		<property name="connection.url">jdbc:sqlserver://35.211.29.147:1433;databaseName=OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>
+		<!-- jTDS driver
+		<property name="connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
+		<property name="connection.url">jdbc:jtds:sqlserver://sql.figstreet.freeddns.org:1433/OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>
+		-->
+		<property name="connection.username">sa</property>
+		<property name="connection.password">WeWouldAchieve1</property>
+		<property name="connection.autocommit">true</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+
+		<!-- Extra Hibernate Params -->
+		<property name="show_sql">false</property>
+		<property name="hibernate.format_sql">false</property>
+
+		<!-- Connection Pooling -->
+		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<property name="hibernate.c3p0.maxPoolSize">10</property>
+		<property name="hibernate.c3p0.minPoolSize">5</property>
+		<property name="hibernate.c3p0.initialPoolSize">5</property>
+		<property name="hibernate.c3p0.timeout">1800</property>
+		<property name="hibernate.c3p0.maxStatements">100</property>
+		<property name="hibernate.c3p0.idleConnectionTestPeriod">300</property>
+		<property name="hibernate.c3p0.acquireIncrement">2</property>
+		<property name="hibernate.c3p0.testConnectionOnCheckin">true</property>
+		<property name="hibernate.c3p0.preferredTestQuery">select count(*) from [codes] where coid is null</property>
+		
+		<!-- All data objects/Entities are listed here -->
+		<mapping class="com.figstreet.data.codes.Codes" />
+		<mapping class="com.figstreet.data.configvalue.ConfigValue" />
+		<mapping class="com.figstreet.data.product.Product" />
+		<mapping class="com.figstreet.data.productoption.ProductOption" />
+		<mapping class="com.figstreet.data.productrating.ProductRating" />
+		<mapping class="com.figstreet.data.vendor.Vendor" />
+		<mapping class="com.figstreet.data.vendoraddress.VendorAddress" />
+		<mapping class="com.figstreet.data.vendorcontact.VendorContact" />
+		<mapping class="com.figstreet.data.history.History" />
+		<mapping class="com.figstreet.data.vendorproduct.VendorProduct" />
+		<mapping class="com.figstreet.data.users.Users" />
+		<mapping class="com.figstreet.data.userpermission.UserPermission" />
+		<mapping class="com.figstreet.data.amazonpricing.AmazonPricing" />
+		<mapping class="com.figstreet.data.amazonsalesrank.AmazonSalesRank" />
+		
+	</session-factory>
+</hibernate-configuration>
