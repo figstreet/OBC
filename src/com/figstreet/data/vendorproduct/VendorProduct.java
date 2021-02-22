@@ -22,10 +22,12 @@ import com.figstreet.data.users.UsersID;
 import com.figstreet.data.vendor.VendorID;
 
 @Entity
-@Table(name = "vendor_product")
+@Table(name = VendorProduct.TABLE_NAME)
 public class VendorProduct extends HibernateDatabaseObject<VendorProductID>
 {
 	private static final long serialVersionUID = -2184983325917377383L;
+
+	public static final String TABLE_NAME = "vendor_product";
 
 	public static final String ID_COLUMN = "vpid";
 	public static final String VENDORID_COLUMN  = "vp_vdid";

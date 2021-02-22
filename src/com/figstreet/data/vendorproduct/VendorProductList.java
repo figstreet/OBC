@@ -1,12 +1,14 @@
 package com.figstreet.data.vendorproduct;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.figstreet.core.FormatUtil;
 import com.figstreet.core.HibernateList;
 import com.figstreet.data.product.ProductID;
 import com.figstreet.data.vendor.VendorID;
@@ -122,6 +124,42 @@ public class VendorProductList extends HibernateList<VendorProduct>
 		}
 		return VendorProduct.DB_CONNECTOR.loadList(query.toString(), args,
 				"ORDER BY " + VendorProduct.ID_COLUMN + " ASC", pLimit);
+	}
+
+	public static int deactiveVendorProducts(VendorID pVendorID, List<VendorProductID> pKeepActiveList) throws SQLException
+	{
+		if (pVendorID == null)
+			throw new IllegalArgumentException("pVendorID is required");
+		if (pKeepActiveList == null || pKeepActiveList.isEmpty())
+			throw new IllegalArgumentException("pKeepActiveList must have at least one element");
+
+		ArrayList<Object> args = new ArrayList<>();
+		StringBuilder update = new StringBuilder("UPDATE ");
+		update.append(FormatUtil.escapeSQLServerObject(VendorProduct.TABLE_NAME));
+		update.append(" SET ");
+		update.append(VendorProduct.ACTIVE_COLUMN);
+		update.append(" = ? WHERE ");
+		args.add(false);
+		update.append(VendorProduct.VENDORID_COLUMN);
+		update.append(" = ? AND ");
+		args.add(pVendorID);
+		update.append(VendorProduct.ID_COLUMN);
+		update.append(" > ? AND ");
+		args.add(pKeepActiveList.get(0));
+		update.append(VendorProduct.ID_COLUMN);
+		update.append(" < ? AND ");
+		args.add(pKeepActiveList.get(pKeepActiveList.size()-1));
+		update.append(VendorProduct.ID_COLUMN);
+		update.append(" NOT IN (");
+		for (VendorProductID keepActive : pKeepActiveList)
+		{
+			update.append("?,");
+			args.add(keepActive);
+		}
+		update.replace(update.length()-1, update.length(), ")");
+
+
+		return VendorProduct.DB_CONNECTOR.updateMany(update.toString(), args);
 	}
 
 }
