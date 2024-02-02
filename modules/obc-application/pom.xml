@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.figstreet</groupId>
+    <artifactId>obc-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Online Business Catalog</description>
+    <packaging>jar</packaging>
+
+    <properties>
+
+    </properties>
+
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+        <finalName>obc-app-${version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Title>OB Core App</Implementation-Title>
+                            <Implementation-Version>${version}</Implementation-Version>
+                            <Implementation-Vendor>Jonathan Schwehm - Fig Street, LLC</Implementation-Vendor>
+                            <Build-Date>${timestamp}</Build-Date>
+                            <Main-Class></Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Figstreet Apache Maven Repo</name>
+            <url>https://maven.pkg.github.com/figstreet/*</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Figstreet Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/figstreet/obc</url>
+        </repository>
+    </distributionManagement>
+
+
+</project>
