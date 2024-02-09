@@ -4,18 +4,39 @@
     http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.figstreet</groupId>
+    <parent>
+        <groupId>com.figstreet</groupId>
+        <artifactId>obc-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
     <artifactId>obc-app</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <description>Online Business Catalog</description>
+    <description>Online Business Catalog application</description>
     <packaging>jar</packaging>
 
     <properties>
-
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.figstreet</groupId>
+            <artifactId>amazon-mws</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -47,7 +68,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <name>GitHub Figstreet Apache Maven Repo</name>
+            <name>GitHub Fig Street Apache Maven Repo</name>
             <url>https://maven.pkg.github.com/figstreet/*</url>
         </repository>
     </repositories>
@@ -55,7 +76,7 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub Figstreet Apache Maven Packages</name>
+            <name>GitHub Fig Street Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/figstreet/obc</url>
         </repository>
     </distributionManagement>

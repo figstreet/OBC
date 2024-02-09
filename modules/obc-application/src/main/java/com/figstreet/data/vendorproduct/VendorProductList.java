@@ -126,6 +126,7 @@ public class VendorProductList extends HibernateList<VendorProduct>
 				"ORDER BY " + VendorProduct.ID_COLUMN + " ASC", pLimit);
 	}
 
+	/**
 	public static int deactiveVendorProducts(VendorID pVendorID, List<VendorProductID> pKeepActiveList) throws SQLException
 	{
 		if (pVendorID == null)
@@ -161,5 +162,5 @@ public class VendorProductList extends HibernateList<VendorProduct>
 
 		return VendorProduct.DB_CONNECTOR.updateMany(update.toString(), args);
 	}
-
+*/
 }
