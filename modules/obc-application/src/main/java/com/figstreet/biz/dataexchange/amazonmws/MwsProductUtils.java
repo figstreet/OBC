@@ -68,7 +68,7 @@ public class MwsProductUtils
 			List<ProductID> amazonMissingIDList = ProductList.loadMissingFromVendor(vendorID, -1);
 
 			// TODO - remove this limit
-			int processLimit = 10;
+			int processLimit = 100;
 			int lookupLimit = config.getMaxGetMatchingProductForId();
 			LinkedHashSet<ProductID> lookupSet = new LinkedHashSet<>(lookupLimit);
 			for (ProductID amazonMissingProductID : amazonMissingIDList)

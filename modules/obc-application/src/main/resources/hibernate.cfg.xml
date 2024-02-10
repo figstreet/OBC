@@ -6,13 +6,13 @@
 	<session-factory>
 		<!-- Database Connection Params - SQLServer -->
 		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="connection.url">jdbc:sqlserver://35.211.29.147:1433;databaseName=OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>
+		<property name="connection.url">jdbc:sqlserver://figstreetllc.database.windows.net:1433;databaseName=OBC_DEV;appName=OBC_bgapp;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</property>
 		<!-- jTDS driver
 		<property name="connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="connection.url">jdbc:jtds:sqlserver://sql.figstreet.freeddns.org:1433/OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>
 		-->
-		<property name="connection.username">sa</property>
-		<property name="connection.password">WeWouldAchieve1</property>
+		<property name="connection.username">obc_user</property>
+		<property name="connection.password">WeWouldAchieve!1</property>
 		<property name="connection.autocommit">true</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
 

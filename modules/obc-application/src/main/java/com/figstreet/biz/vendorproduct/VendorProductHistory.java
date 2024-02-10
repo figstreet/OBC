@@ -150,7 +150,9 @@ public class VendorProductHistory extends JsonDataObject
 				|| !CompareUtil.equalsString(pVendorProduct.getVendorIdentifier(),
 						pLastVendorProduct.getVendorIdentifier(), true)
 				|| !CompareUtil.equals(pVendorProduct.getAmazonMarketplace(), pLastVendorProduct.getAmazonMarketplace())
-				|| !CompareUtil.equals(pVendorProduct.getPriceCurrency(), pLastVendorProduct.getPriceCurrency()));
+				|| !CompareUtil.equals(pVendorProduct.getPriceCurrency(), pLastVendorProduct.getPriceCurrency())
+				//Not evaluating Downloaded for history
+				);
 	}
 
 	public static History buildVendorProductHistory(VendorProduct pVendorProduct, VendorProduct pLastVendorProduct,

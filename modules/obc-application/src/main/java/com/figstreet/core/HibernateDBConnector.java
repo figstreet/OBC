@@ -292,7 +292,7 @@ public class HibernateDBConnector<C extends HibernateDatabaseObject<J>, L extend
 
 		if (dbList != null)
 		{
-			//If values were found, convert to the ID type
+			// If values were found, convert to the ID type
 			try
 			{
 				pkList = new ArrayList<J>(dbList.size());
@@ -311,6 +311,37 @@ public class HibernateDBConnector<C extends HibernateDatabaseObject<J>, L extend
 		}
 
 		return pkList;
+	}
+
+	public int updateMany(String pQuery, List<Object> pArgs) throws SQLException
+	{
+		int updateCount = 0;
+		HibernateTransaction trans = HibernateTransaction.open();
+		Session session = trans.getSession();
+		try
+		{
+			NativeQuery nativeQuery = session.createNativeQuery(pQuery);
+			if (pArgs != null && !pArgs.isEmpty())
+			{
+				for (int i = 0; i < pArgs.size(); i++)
+				{
+					Object argument = pArgs.get(i);
+					nativeQuery.setParameter((i+1), argument);
+				}
+			}
+			updateCount = nativeQuery.executeUpdate();
+			trans.commit();
+		}
+		catch (HibernateException he)
+		{
+			throw new SQLException(he);
+		}
+		finally
+		{
+			trans.close();
+		}
+
+		return updateCount;
 	}
 
 }
