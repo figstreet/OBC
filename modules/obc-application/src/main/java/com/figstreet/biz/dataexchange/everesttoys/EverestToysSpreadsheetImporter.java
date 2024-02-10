@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -15,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.figstreet.biz.product.ProductHistory;
+import com.figstreet.biz.vendorproduct.VendorProductHistory;
 import com.figstreet.core.CompareUtil;
 import com.figstreet.core.HibernateTransaction;
 import com.figstreet.core.Logging;
@@ -33,7 +35,7 @@ public class EverestToysSpreadsheetImporter
 {
 	private static final String LOGGER_NAME = EverestToysSpreadsheetImporter.class.getPackage().getName()
 			+ ".EverestToysSpreadsheetImporter";
-	public static final String XLSX_FILE_PATH = "./apps/OBC/USA May 14 2020 - In Stock List.xlsx";
+	public static final String XLSX_FILE_PATH = "./apps/OBC/USA October 15 2020 - In Stock List.xlsx";
 
 	public static void main(String[] args)
 	{
@@ -41,10 +43,14 @@ public class EverestToysSpreadsheetImporter
 		if (args.length > 0)
 			spreadsheetPath = args[0];
 
+		boolean includePerCase = true;
+		if (args.length > 1)
+			includePerCase = Boolean.valueOf(args[1]);
+
 		SystemInitializer.initialize("/apps/OBC/testLog.conf", "/apps/OBC/hibernate.cfg.xml");
 		try
 		{
-			importSpreadsheet(new File(spreadsheetPath), 4, VendorID.EVEREST_TOYS, UsersID.ADMIN);
+			importSpreadsheet(new File(spreadsheetPath), 4, VendorID.EVEREST_TOYS, includePerCase, UsersID.ADMIN);
 		}
 		catch (Exception e)
 		{
@@ -53,8 +59,8 @@ public class EverestToysSpreadsheetImporter
 		SystemInitializer.shutdown();
 	}
 
-	public static void importSpreadsheet(File pSpreadsheetFile, int pRowsToAdvance, VendorID pVendorID, UsersID pBy)
-			throws InvalidFormatException, IOException
+	public static void importSpreadsheet(File pSpreadsheetFile, int pRowsToAdvance, VendorID pVendorID,
+			boolean pIncluePerCase, UsersID pBy) throws InvalidFormatException, IOException
 	{
 		try (OPCPackage pkg = OPCPackage.open(XLSX_FILE_PATH, PackageAccess.READ);)
 		{
@@ -76,12 +82,16 @@ public class EverestToysSpreadsheetImporter
 			while (rowIterator.hasNext())
 			{
 				Row row = rowIterator.next();
-				EverestProduct product = new EverestProduct(row);
+				EverestProduct product = new EverestProduct(row, pIncluePerCase);
+
 				productList.add(product);
 				if (productList.size() >= listSize)
 				{
 					rowEnd = rowIndex;
 					processList(pVendorID, productList, rowStart, rowEnd, pBy);
+
+
+
 					productList.clear();
 					rowStart = rowEnd++;
 				}
@@ -99,81 +109,79 @@ public class EverestToysSpreadsheetImporter
 	public static void processList(VendorID pVendorID, List<EverestProduct> pProductList, int pStartRow, int pEndRow,
 			UsersID pBy)
 	{
-		// Used for loading Product records
-		ArrayList<String> upcList = new ArrayList<>(pProductList.size());
-		// Used for syncing Product data by UPC
-		LinkedHashMap<String, EverestProduct> upcMap = new LinkedHashMap<>(pProductList.size());
-		ArrayList<EverestProduct> noUpcList = new ArrayList<>(); // TODO Log these records as an error at the end
+		// The UPC isn't always correct, so using the Vendor Code/Identifier instead
+		ArrayList<String> vendorIdList = new ArrayList<>(pProductList.size());
+		LinkedHashMap<String, EverestProduct> vendorIdentifierMap = new LinkedHashMap<>(pProductList.size());
+		ArrayList<EverestProduct> noVendorIdentifierList = new ArrayList<>(); // TODO Log these records as an error at
+																				// the end
 
 		for (EverestProduct evProduct : pProductList)
 		{
-			if (!CompareUtil.isEmpty(evProduct.getUpc()))
+			if (!CompareUtil.isEmpty(evProduct.getCode()))
 			{
-				upcList.add(evProduct.getUpc());
-				upcMap.put(evProduct.getUpc(), evProduct);
+				vendorIdList.add(evProduct.getCode());
+				vendorIdentifierMap.put(evProduct.getCode(), evProduct);
 			}
 			else
 			{
-				noUpcList.add(evProduct);
+				noVendorIdentifierList.add(evProduct);
 			}
 		}
 
 		try
 		{
-			// Now load Products by UPC
-			ProductList byUpcList = ProductList.loadByUpcList(upcList);
-			// Used for syncing VendorProduct data
-			LinkedHashMap<ProductID, EverestProduct> productIDMap = new LinkedHashMap<>(byUpcList.size());
-			// Used to load VendorProduct records
-			ArrayList<ProductID> productIDList = new ArrayList<>(byUpcList.size());
+			VendorProductList byVendorIdentifierList = VendorProductList.loadByVendorIdentifierList(pVendorID,
+					vendorIdList);
+			// Used for syncing Product data
+			LinkedHashMap<ProductID, EverestProduct> productIDMap = new LinkedHashMap<>(byVendorIdentifierList.size());
+			// Used to load ProductRecords
+			LinkedHashSet<ProductID> productIDSet = new LinkedHashSet<>(byVendorIdentifierList.size());
 
-			// Update the Product data with information from the spreadsheet using
-			// syncProduct
-			for (Product byUpc : byUpcList)
+			// Update the VendorProduct data with information from the spreadsheet
+			// using syncVendorProduct
+			for (VendorProduct byVendorIdentifier : byVendorIdentifierList)
 			{
-				productIDList.add(byUpc.getRecordID());
-				EverestProduct evProduct = upcMap.get(byUpc.getUpc());
+				productIDSet.add(byVendorIdentifier.getProductID());
+				EverestProduct evProduct = vendorIdentifierMap.get(byVendorIdentifier.getVendorIdentifier());
 				if (evProduct != null)
 				{
-					evProduct.syncProduct(byUpc);
-					productIDMap.put(byUpc.getRecordID(), evProduct); // Used when syncing VendorProduct
+					productIDMap.put(byVendorIdentifier.getProductID(), evProduct);
+					evProduct.syncVendorProduct(byVendorIdentifier);
 				}
 				else
 				{
 					Logging.errorf(LOGGER_NAME, "processList",
-							"Retrieved ProductID %s by UPC %s, but did not find EverestProduct in upcMap, new product may be created",
-							ProductID.asString(byUpc.getRecordID()), byUpc.getUpc());
+							"Retrieved VendorProductID %s by VendorIdentifier %s, but did not find EverestProduct in vendorIdentifierMap, new vendor_product may be created",
+							VendorProductID.asString(byVendorIdentifier.getRecordID()),
+							byVendorIdentifier.getVendorIdentifier());
 				}
 			}
 
-			if (!productIDList.isEmpty())
+			// Now load Products by ProductID
+			ProductList productList = ProductList.loadByProductIDs(productIDSet);
+			// Update the Product data with information from the spreadsheet using
+			// syncProduct
+			for (Product product : productList)
 			{
-				// Now load VendorProduct by VendorID and ProductID list
-				VendorProductList byProductIDList = VendorProductList.loadByVendorAndProductIDList(pVendorID,
-						productIDList);
-
-				// Update the VendorProduct data with information from the spreadsheet using
-				// syncVendorProduct
-				for (VendorProduct byProductID : byProductIDList)
+				EverestProduct evProduct = productIDMap.get(product.getRecordID());
+				if (evProduct != null)
 				{
-					EverestProduct evProduct = productIDMap.get(byProductID.getProductID());
-					if (evProduct != null)
-					{
-						evProduct.syncVendorProduct(byProductID);
-					}
-					else
-					{
-						Logging.errorf(LOGGER_NAME, "processList",
-								"Retrieved VendorProductID %s by ProductID %s, but did not find EverestProduct in productIDMap, new vendor_product may be created",
-								VendorProductID.asString(byProductID.getRecordID()),
-								ProductID.asString(byProductID.getProductID()));
-					}
+					evProduct.syncProduct(product);
+				}
+				else
+				{
+					Logging.errorf(LOGGER_NAME, "processList",
+							"Retrieved Product by ProductID %s, but did not find EverestProduct in productIDMap, new product may be created",
+							ProductID.asString(product.getRecordID()));
 				}
 			}
+
+			ArrayList<VendorProductID> activeVpidList = new ArrayList<>(pProductList.size());
 
 			// Now update the Product and VendorProdcut data stored in each EverestProduct
 			for (EverestProduct evProduct : pProductList)
 			{
+				VendorProduct vendorProduct = null;
 				Product product = evProduct.getProduct(pBy);
 				History productHistory = ProductHistory.buildProductHistory(product, evProduct.getLastProduct(), pBy);
 				HibernateTransaction trans = HibernateTransaction.open();
@@ -182,21 +190,32 @@ public class EverestToysSpreadsheetImporter
 					product.saveOrUpdate(pBy);
 					if (productHistory != null)
 						productHistory.saveOrUpdate(pBy);
-					VendorProduct vendorProduct = evProduct.getVendorProduct(pVendorID, product.getRecordID(), pBy);
+					vendorProduct = evProduct.getVendorProduct(pVendorID, product.getRecordID(), pBy);
 					vendorProduct.saveOrUpdate(pBy);
-					// TODO - add history for lastVendorProduct
+					History vendorProductHistory = VendorProductHistory.buildVendorProductHistory(vendorProduct,
+							evProduct.getLastVendorProduct(), pBy);
+					if (vendorProductHistory != null)
+						vendorProductHistory.saveOrUpdate(pBy);
 					trans.commit();
 				}
 				finally
 				{
 					trans.close();
 				}
+				activeVpidList.add(vendorProduct.getRecordID());
 			}
+
+			//TODO Deactivate all VendorProduct for Everest that weren't on the spreadsheet
+//			for ()
+//			{
+//
+//			}
 		}
 		catch (Exception e)
 		{
 			Logging.error(LOGGER_NAME, "processList",
 					"Error processing list of records from row " + pStartRow + " to " + pEndRow, e);
 		}
+
 	}
 }

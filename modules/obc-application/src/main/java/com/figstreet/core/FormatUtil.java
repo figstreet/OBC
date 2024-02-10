@@ -21,6 +21,16 @@ public class FormatUtil
 		return pValue.replaceAll("[']", "''");
 	}
 
+	public static String escapeSQLServerObject(String pValue)
+	{
+		if (pValue == null)
+			return null;
+		if (pValue.startsWith("["))
+			return pValue;
+
+		return "[" + pValue + "]";
+	}
+
 	public static String formatName(String pPrefix, String pFirst, String pMiddle, String pLast, String pSuffix,
 			boolean pLastNameFirst)
 	{

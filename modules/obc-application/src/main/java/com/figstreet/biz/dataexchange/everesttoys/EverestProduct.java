@@ -1,11 +1,15 @@
 package com.figstreet.biz.dataexchange.everesttoys;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.figstreet.core.CompareUtil;
+import com.figstreet.core.DateUtil;
 import com.figstreet.core.FormatUtil;
 import com.figstreet.data.product.Product;
 import com.figstreet.data.product.ProductID;
@@ -15,12 +19,17 @@ import com.figstreet.data.vendorproduct.VendorProduct;
 
 public class EverestProduct
 {
+	private static final Pattern PER_ORDER_PATTERN = Pattern.compile(".+\\(([0-9]+)\\).*");
+	private static final Pattern PER_ORDER_PATTERN_2 = Pattern.compile(".+\\(.*\\s+([0-9]+)\\).*");
+
 	private String fCode;
 	private String fDescription;
 	private String fStatus1;
 	private String fStatus2;
 	private String fUpc;
 	private double fPrice;
+	private int fPerOrder = 1;
+	private int fPerCase;
 	private Integer fQuantityBreak;
 	private Double fQuantityBreakPrice;
 
@@ -35,7 +44,7 @@ public class EverestProduct
 		// Empty ctor
 	}
 
-	public EverestProduct(Row pSpreadsheetRow)
+	public EverestProduct(Row pSpreadsheetRow, boolean pIncludePerCase)
 	{
 		if (pSpreadsheetRow == null)
 			throw new IllegalArgumentException("Row is required");
@@ -50,6 +59,23 @@ public class EverestProduct
 		{
 			Cell descCell = cellIterator.next();
 			this.fDescription = descCell.getStringCellValue();
+			Matcher perOrderMatcher = PER_ORDER_PATTERN.matcher(this.fDescription);
+			if (!perOrderMatcher.matches())
+				perOrderMatcher = PER_ORDER_PATTERN_2.matcher(this.fDescription);
+
+			if (perOrderMatcher.matches())
+			{
+				String perOrder = perOrderMatcher.group(1);
+				try
+				{
+					this.fPerOrder = Integer.parseInt(perOrder);
+				}
+				catch (Exception e)
+				{
+					//do nothing
+				}
+			}
+
 		}
 		if (cellIterator.hasNext())
 		{
@@ -69,6 +95,11 @@ public class EverestProduct
 		{
 			Cell upcCell = cellIterator.next();
 			this.fUpc = upcCell.getStringCellValue();
+		}
+		if (pIncludePerCase && cellIterator.hasNext())
+		{
+			Cell perCaseCell = cellIterator.next();
+			this.fPerCase = new Double(perCaseCell.getNumericCellValue()).intValue();
 		}
 		if (cellIterator.hasNext())
 		{
@@ -151,6 +182,26 @@ public class EverestProduct
 		this.fPrice = pPrice;
 	}
 
+	public int getPerOrder()
+	{
+		return this.fPerOrder;
+	}
+
+	public void setPerOrder(int pPerOrder)
+	{
+		this.fPerOrder = pPerOrder;
+	}
+
+	public int getPerCase()
+	{
+		return this.fPerCase;
+	}
+
+	public void setPerCase(int pPerCase)
+	{
+		this.fPerCase = pPerCase;
+	}
+
 	public Integer getQuantityBreak()
 	{
 		return this.fQuantityBreak;
@@ -182,8 +233,8 @@ public class EverestProduct
 			{
 				// Using the first 100 characters of the Description for the name, only when
 				// adding a new Product
-				Product product = new Product(FormatUtil.truncate(this.fDescription, 100), this.fUpc, null, pBy);
-				product.setShortDescription(this.fDescription);
+				Product product = new Product(FormatUtil.truncate(this.getDescription(), 100), this.getUpc(), null, pBy);
+				product.setShortDescription(this.getDescription());
 				this.fProduct = product;
 			}
 		}
@@ -197,8 +248,10 @@ public class EverestProduct
 		this.fProduct = pProduct;
 		// Not updating the name
 		this.fProduct.setActive(true);
-		this.fProduct.setUpc(this.fUpc); // Should already match
-		this.fProduct.setShortDescription(this.fDescription);
+		if (CompareUtil.isEmpty(this.fProduct.getUpc()))
+			this.fProduct.setUpc(this.getUpc());
+		if (CompareUtil.isEmpty(this.fProduct.getShortDescription()))
+			this.fProduct.setShortDescription(this.getDescription());
 	}
 
 	public Product getLastProduct()
@@ -236,11 +289,19 @@ public class EverestProduct
 	private void syncFields(VendorProduct pVendorProduct)
 	{
 		pVendorProduct.setAvailableOnline(true);
-		pVendorProduct.setPrice(this.fPrice);
-		pVendorProduct.setAlternativePrice(this.fQuantityBreakPrice);
-		pVendorProduct.setMinimumOrderQuantity(this.fQuantityBreak);
-		if (this.fCode != null)
-			pVendorProduct.setVendorIdentifier(this.fCode);
+		BigDecimal bdPrice = BigDecimal.valueOf(this.getPrice());
+		bdPrice = bdPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+		if (this.getPerOrder() > 1)
+		{
+			BigDecimal bdPerOrder = BigDecimal.valueOf(this.getPerOrder());
+			bdPrice = bdPrice.divide(bdPerOrder, 2, BigDecimal.ROUND_HALF_EVEN);
+		}
+		pVendorProduct.setPrice(bdPrice.doubleValue());
+		pVendorProduct.setAlternativePrice(this.getQuantityBreakPrice());
+		pVendorProduct.setMinimumOrderQuantity(this.getQuantityBreak());
+		if (this.getCode() != null && pVendorProduct.getVendorIdentifier() == null)
+			pVendorProduct.setVendorIdentifier(this.getCode());
+		pVendorProduct.setDownloaded(DateUtil.now());
 	}
 
 	public VendorProduct getLastVendorProduct()
@@ -255,21 +316,21 @@ public class EverestProduct
 		if (!CompareUtil.isEmpty(this.fCode))
 		{
 			builder.append("Code: ");
-			builder.append(this.fCode);
+			builder.append(this.getCode());
 		}
 		if (!CompareUtil.isEmpty(this.fUpc))
 		{
 			if (builder.length() > 0)
 				builder.append("; ");
 			builder.append("UPC: ");
-			builder.append(this.fUpc);
+			builder.append(this.getUpc());
 		}
 		if (!CompareUtil.isEmpty(this.fDescription))
 		{
 			if (builder.length() > 0)
 				builder.append("; ");
 			builder.append("Desc: ");
-			builder.append(this.fDescription);
+			builder.append(this.getDescription());
 		}
 		return builder.toString();
 	}
