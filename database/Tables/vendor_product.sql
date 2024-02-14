@@ -11,7 +11,7 @@ CREATE TABLE [dbo].[vendor_product](
 	[vp_available_online] bit NULL default 1,
 	[vp_vendor_identifier] [varchar](30) NULL, 
 	[vp_amazon_marketplace] [varchar](25) NULL,
-	[vp_price_currency] [varchar] [25] NULL,
+	[vp_price_currency] [varchar] (25) NULL,
 	[vp_downloaded] [datetime] NULL,
 	[vp_added_by] [int] NOT NULL,
 	[vp_added_dt] [datetime] NOT NULL,

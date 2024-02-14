@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgUsersInsertUpdate] ON [dbo].[users]
+GO
+
+CREATE TRIGGER [dbo].[trgUsersInsertUpdate] ON [dbo].[users]
 AFTER INSERT, UPDATE
 AS
 BEGIN

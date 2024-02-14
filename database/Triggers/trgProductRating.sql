@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgProductRatingInsertUpdate] ON [dbo].[productrating]
+GO
+
+CREATE TRIGGER [dbo].[trgProductRatingInsertUpdate] ON [dbo].[productrating]
 AFTER INSERT, UPDATE
 AS
 BEGIN

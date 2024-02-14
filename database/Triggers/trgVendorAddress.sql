@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgVendorAddressInsertUpdate] ON [dbo].[vendoraddress] AFTER INSERT, UPDATE
+GO
+
+CREATE TRIGGER [dbo].[trgVendorAddressInsertUpdate] ON [dbo].[vendoraddress] AFTER INSERT, UPDATE
 AS
 BEGIN
 if @@ROWCOUNT = 0 return

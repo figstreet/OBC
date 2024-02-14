@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgProductInsertUpdate] ON [dbo].[product]
+GO
+
+CREATE TRIGGER [dbo].[trgProductInsertUpdate] ON [dbo].[product]
 AFTER INSERT, UPDATE
 AS
 BEGIN

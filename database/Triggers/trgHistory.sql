@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgHistoryInsertUpdate] ON [dbo].[history] AFTER INSERT, UPDATE
+GO
+
+CREATE TRIGGER [dbo].[trgHistoryInsertUpdate] ON [dbo].[history] AFTER INSERT, UPDATE
 AS
 BEGIN
 if @@ROWCOUNT = 0 return

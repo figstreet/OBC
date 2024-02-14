@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgUserPermissionInsertUpdate] ON [dbo].[userpermission] AFTER INSERT, UPDATE
+GO
+
+CREATE TRIGGER [dbo].[trgUserPermissionInsertUpdate] ON [dbo].[userpermission] AFTER INSERT, UPDATE
 AS
 BEGIN
 if @@ROWCOUNT = 0 return

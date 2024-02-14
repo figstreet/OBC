@@ -6,7 +6,7 @@
 	<session-factory>
 		<!-- Database Connection Params - SQLServer -->
 		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="connection.url">jdbc:sqlserver://figstreetllc.database.windows.net:1433;databaseName=OBC_DEV;appName=OBC_bgapp;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</property>
+		<property name="connection.url">jdbc:sqlserver://sql.figstreet.com:1433;databaseName=obc_db;appName=OBC_bgapp;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.figstreet.com;loginTimeout=30;</property>
 		<!-- jTDS driver
 		<property name="connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="connection.url">jdbc:jtds:sqlserver://sql.figstreet.freeddns.org:1433/OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>

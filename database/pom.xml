@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.figstreet</groupId>
+        <artifactId>obc-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>database</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Database scripts</description>
+    <packaging>pom</packaging>
+
+    <properties>
+    </properties>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+        <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <executions>
+                <execution>
+                    <id>default-cli</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <target>
+                            <concat destfile="./target/OBC_DB.sql"
+                                    force="yes">
+                                <fileset dir=".">
+                                    <include name="create_obc_db.sql"></include>
+                                </fileset>
+                                <fileset dir=".">
+                                    <include name="use_obc_db.sql"></include>
+                                </fileset>
+                                <fileset dir="./Tables/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                                <fileset dir=".">
+                                    <include name="use_obc_db.sql"></include>
+                                </fileset>
+                                <fileset dir="./Triggers/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                                <fileset dir=".">
+                                    <include name="use_obc_db.sql"></include>
+                                </fileset>
+                                <fileset dir="./Indexes/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                                <fileset dir=".">
+                                    <include name="use_obc_db.sql"></include>
+                                </fileset>
+                                <fileset dir="./ForeignKeys/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                            </concat>
+
+                        </target>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Fig Street Apache Maven Repo</name>
+            <url>https://maven.pkg.github.com/figstreet/*</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Fig Street Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/figstreet/obc</url>
+        </repository>
+    </distributionManagement>
+
+
+</project>
