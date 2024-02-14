@@ -27,6 +27,7 @@
     </properties>
 
     <modules>
+        <module>database</module>
         <module>modules/amazon-mws</module>
         <module>modules/obc-application</module>
     </modules>
@@ -453,9 +454,6 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>4.1.2</version>
         </dependency>
-
-
-
     </dependencies>
 
     <build>

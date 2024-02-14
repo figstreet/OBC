@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgAmazonSalesRankInsertUpdate] ON [dbo].[amazonsalesrank] 
+GO
+
+CREATE TRIGGER [dbo].[trgAmazonSalesRankInsertUpdate] ON [dbo].[amazonsalesrank]
 AFTER INSERT, UPDATE
 AS
 BEGIN

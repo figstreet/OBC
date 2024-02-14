@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgCodesInsertUpdate] ON [dbo].[codes]
+GO
+
+CREATE TRIGGER [dbo].[trgCodesInsertUpdate] ON [dbo].[codes]
 AFTER INSERT, UPDATE
 AS
 BEGIN

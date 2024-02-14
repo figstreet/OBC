@@ -1,5 +1,7 @@
 
-CREATE OR ALTER TRIGGER [dbo].[trgConfigValueInsertUpdate] ON [dbo].[configvalue] AFTER INSERT, UPDATE
+GO
+
+CREATE TRIGGER [dbo].[trgConfigValueInsertUpdate] ON [dbo].[configvalue] AFTER INSERT, UPDATE
 AS
 BEGIN
 if @@ROWCOUNT = 0 return
