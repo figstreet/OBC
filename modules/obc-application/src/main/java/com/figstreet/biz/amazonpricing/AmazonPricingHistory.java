@@ -119,7 +119,7 @@ public class AmazonPricingHistory extends JsonDataObject
 			this.fBuyboxShippingPrice = pLastAmazonPricing.getBuyboxShippingPrice();
 			this.fBuyboxFBA = pLastAmazonPricing.isBuyboxFBA();
 			this.fBuyboxSellerAmazon = pLastAmazonPricing.getBuyboxSellerAmazon();
-			this.fSecondaryItemPrice = pLastAmazonPricing.getBuyboxItemPrice();
+			this.fSecondaryItemPrice = pLastAmazonPricing.getSecondaryItemPrice();
 			this.fSecondaryShippingPrice = pLastAmazonPricing.getSecondaryShippingPrice();
 			this.fSecondaryFBA = pLastAmazonPricing.isSecondaryFBA();
 			this.fDownloaded = pLastAmazonPricing.getDownloaded();
@@ -127,7 +127,41 @@ public class AmazonPricingHistory extends JsonDataObject
 			this.fAddedBy = pLastAmazonPricing.getAddedBy();
 		}
 	}
-
+/*
+    public AmazonPricingHistory(
+			AmazonPricingID pricingID,
+	VendorProductID vendorProductID,
+	ProductCondition fProductCondition,
+	int fOffertCount,
+	PriceCurrency priceCurrency,
+	Double fBuyboxItemPrice,
+	Double fBuyboxShippingPrice,
+	boolean fBuyboxFBA,
+	boolean fBuyboxSellerAmazon,
+	Double fSecondaryItemPrice,
+	Double fSecondaryShippingPrice,
+	boolean fSecondaryFBA,
+	Timestamp fDownloaded,
+	Timestamp fAdded,
+	UsersID fAddedBy)
+	{
+		this.fAmazonPricingID = pricingID;
+		this.fVendorProductID =vendorProductID;
+		this.fProductCondition =fProductCondition;
+		this.fOfferCount =fOffertCount;
+		this.fPriceCurrency =priceCurrency;
+		this.fBuyboxItemPrice =fBuyboxItemPrice;
+		this.fBuyboxShippingPrice =fBuyboxShippingPrice;
+		this.fBuyboxFBA =fBuyboxFBA;
+		this.fBuyboxSellerAmazon =fBuyboxSellerAmazon;
+		this.fSecondaryItemPrice =fSecondaryItemPrice;
+		this.fSecondaryShippingPrice =fSecondaryShippingPrice;
+		this.fSecondaryFBA =fSecondaryFBA;
+		this.fDownloaded =fDownloaded;
+		this.fAdded =fAdded;
+		this.fAddedBy =fAddedBy;
+	}
+*/
 	public static AmazonPricingHistory newInstance(Path pJsonFile) throws IOException
 	{
 		return fromJson(GSON, pJsonFile, AmazonPricingHistory.class);
