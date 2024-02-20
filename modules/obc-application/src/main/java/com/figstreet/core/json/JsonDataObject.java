@@ -153,9 +153,9 @@ public abstract class JsonDataObject implements Jsonable, Serializable
 		BufferedReader reader = null;
 		try
 		{
-			System.out.println("it is executing 1 " + pJsonFile);
+			//System.out.println("it is executing 1 " + pJsonFile);
 			reader = Files.newBufferedReader(pJsonFile);
-			System.out.println("it is executing 2");
+			//System.out.println("it is executing 2");
 			jsonData = pGson.fromJson(reader, pClass);
 		}
 		finally
