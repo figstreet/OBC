@@ -10,5 +10,8 @@
         <module name="amazon-mws" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="database" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
