@@ -34,7 +34,7 @@
     </dependencies>
 
     <build>
-        <finalName>amazon-mws-${version}</finalName>
+        <finalName>amazon-mws-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -48,7 +48,7 @@
                         </manifest>
                         <manifestEntries>
                             <Implementation-Title>Amazon MWS Library</Implementation-Title>
-                            <Implementation-Version>${version}</Implementation-Version>
+                            <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Vendor>Jonathan Schwehm - Fig Street, LLC</Implementation-Vendor>
                             <Build-Date>${timestamp}</Build-Date>
                         </manifestEntries>
