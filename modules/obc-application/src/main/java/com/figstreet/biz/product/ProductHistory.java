@@ -271,4 +271,33 @@ public class ProductHistory extends JsonDataObject
 	{
 		return this.fAddedBy;
 	}
+
+	public MeasurementUnit getLengthUnit() {
+		return fLengthUnit;
+	}
+
+	public MeasurementUnit getWidthUnit() {
+		return fWidthUnit;
+	}
+
+	public MeasurementUnit getHeightUnit() {
+		return fHeightUnit;
+	}
+
+	public MeasurementUnit getWeightUnit() {
+		return fWeightUnit;
+	}
+
+	public String getImageUrl() {
+		return fImageUrl;
+	}
+
+	public Double getListPrice() {
+		return fListPrice;
+	}
+
+	public PriceCurrency getPriceCurrency() {
+		return fPriceCurrency;
+	}
+
 }

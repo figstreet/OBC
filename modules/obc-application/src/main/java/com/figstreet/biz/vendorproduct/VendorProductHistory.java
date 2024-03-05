@@ -227,4 +227,14 @@ public class VendorProductHistory extends JsonDataObject
 	{
 		return this.fAddedBy;
 	}
+
+
+			public AmazonMarketplace getAmazonMarketplace() {
+			return fAmazonMarketplace;
+		}
+
+			public PriceCurrency getPriceCurrency() {
+			return fPriceCurrency;
+		}
+
 }

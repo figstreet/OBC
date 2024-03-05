@@ -190,4 +190,10 @@ public class AmazonSalesRankHistory extends JsonDataObject
 	{
 		return this.fAddedBy;
 	}
+
+	public AmazonSalesRankCategory getSecundarySalesRankCategory()
+	{
+		return this.fSecondarySalesRankCategory;
+	}
+
 }
