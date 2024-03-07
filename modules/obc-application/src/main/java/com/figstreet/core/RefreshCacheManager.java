@@ -67,7 +67,7 @@ public class RefreshCacheManager extends Thread
 	{
 		if (pCheckDb || !this.fLastReadTimeStamps.containsKey(pName))
 		{
-			ConfigValue value = ConfigValue.findByName(CONFIG_NAME, pName);
+			ConfigValue value = ConfigValue.findByNameForClient(ClientID.GENERAL, CONFIG_NAME, pName);
 			if (value != null)
 			{
 				try
@@ -91,7 +91,7 @@ public class RefreshCacheManager extends Thread
 		ConfigValueList values;
 		try
 		{
-			values = ConfigValueList.loadByTypeAndName(CONFIG_NAME, null);
+			values = ConfigValueList.loadByTypeAndNameForClient(ClientID.GENERAL, CONFIG_NAME, null);
 		}
 		catch (Exception e)
 		{
@@ -173,7 +173,7 @@ public class RefreshCacheManager extends Thread
 	public void setTimeStamp(String pCacheName, long pTimeStamp, boolean pAddIfMissing, UsersID pBy)
 			throws SQLException
 	{
-		ConfigValue value = ConfigValue.findByName(CONFIG_NAME, pCacheName);
+		ConfigValue value = ConfigValue.findByNameForClient(ClientID.GENERAL, CONFIG_NAME, pCacheName);
 		if (value == null && pAddIfMissing)
 			value = new ConfigValue(CONFIG_NAME, pCacheName, null, pBy);
 		if (value != null)

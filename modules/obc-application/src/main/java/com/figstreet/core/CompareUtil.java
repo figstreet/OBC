@@ -173,4 +173,35 @@ public class CompareUtil
 
 		return pLHS.compareTo(pRHS);
 	}
+
+	public static boolean equals(char[] pLHS, char[] pRHS, boolean pCaseSensitive)
+	{
+		if (pLHS == null)
+			return pRHS == null;
+		if (pRHS == null)
+			return false;
+
+		if (pLHS.length != pRHS.length)
+			return false;
+
+		int i = 0;
+		for (char left : pLHS)
+		{
+			if (pCaseSensitive)
+			{
+				if (left != pRHS[i])
+					return false;
+			}
+			else
+			{
+				String leftS = String.valueOf(left).toUpperCase();
+				String rightS = String.valueOf(pRHS[i]).toUpperCase();
+				if (!leftS.equals(rightS))
+					return false;
+			}
+			i++;
+		}
+
+		return true;
+	}
 }

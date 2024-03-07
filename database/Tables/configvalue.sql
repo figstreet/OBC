@@ -1,6 +1,7 @@
 
 CREATE TABLE [dbo].[configvalue](
 	[cvid] int IDENTITY(1,1) NOT NULL,
+    [cv_clid] [int] NOT NULL default 0,
 	[cv_active] [bit] NOT NULL default 1,
 	[cv_config_type] [varchar](25) NOT NULL,
 	[cv_property_name] [varchar](25) NOT NULL,

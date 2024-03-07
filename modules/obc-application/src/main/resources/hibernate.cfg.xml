@@ -33,6 +33,7 @@
 		<property name="hibernate.c3p0.preferredTestQuery">select count(*) from [codes] where coid is null</property>
 		
 		<!-- All data objects/Entities are listed here -->
+		<mapping class="com.figstreet.data.client.Client" />
 		<mapping class="com.figstreet.data.codes.Codes" />
 		<mapping class="com.figstreet.data.configvalue.ConfigValue" />
 		<mapping class="com.figstreet.data.product.Product" />
