@@ -15,6 +15,10 @@ public final class Logging
 	{
 	}
 
+	public static boolean isInitialized() {
+		return fInitialized;
+	}
+
 	public static synchronized void initialize(String pPath)
 	{
 		if (!fInitialized)
@@ -93,6 +97,11 @@ public final class Logging
 		getLogger(pClass).warn(formatMessage(pClass, pMethod, pMessage));
 	}
 
+	public static void warn(String pClass, String pMethod, String pMessage, Exception pExc)
+	{
+		getLogger(pClass).warn(formatMessage(pClass, pMethod, pMessage), pExc);
+	}
+
 	public static void warnf(String pClass, String pMethod, String pMessage, Object... pArgs)
 	{
 		getLogger(pClass).warn(formatMessage(pClass, pMethod, String.format(pMessage, pArgs)));
@@ -101,6 +110,11 @@ public final class Logging
 	public static void error(String pClass, String pMethod, String pMessage)
 	{
 		getLogger(pClass).error(formatMessage(pClass, pMethod, pMessage));
+	}
+
+	public static void error(String pClass, String pMethod, Exception pExc)
+	{
+		getLogger(pClass).error(formatMessage(pClass, pMethod, pExc.getClass().getName()), pExc);
 	}
 
 	public static void errorf(String pClass, String pMethod, String pMessage, Object... pArgs)

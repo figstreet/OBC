@@ -16,6 +16,7 @@ public class DateUtil
 	private static final String DATE_FORMAT_LONG = "MMMM d, yyyy";
 	public static final String TIME_FORMAT = "h:mm a";
 	private static final String BOTH_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
+	public static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd";
 	public static final String ISO8601_TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	public static final long MILLIS_PER_DAY = 86400000;
 	public static final long MILLIS_PER_HOUR = 3600000;

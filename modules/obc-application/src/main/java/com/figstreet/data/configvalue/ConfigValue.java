@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.ClientID;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -25,6 +26,7 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 	private static final long serialVersionUID = -5580281699868867640L;
 
 	public static final String ID_COLUMN = "cvid";
+	public static final String CLIENTID_COLUMN = "cv_clid";
 	public static final String ACTIVE_COLUMN = "cv_active";
 	public static final String CONFIG_TYPE_COLUMN = "cv_config_type";
 	public static final String PROPERTY_NAME_COLUMN = "cv_property_name";
@@ -35,6 +37,7 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 	public static final String LASTUPDATED_BY_COLUMN = "cv_lastupdated_by";
 
 	private boolean fActive;
+	private ClientID fClientID;
 	private String fConfigValueType;
 	private String fPropertyName;
 	private String fPropertyValue;
@@ -48,9 +51,14 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 		// empty ctor;
 	}
 
-	public ConfigValue(String pConfigValueType, String pPropertyName, String pPropertyValue, UsersID pAddedBy)
+	public ConfigValue(String pConfigValueType, String pPropertyName, String pPropertyValue, UsersID pAddedBy) {
+		this(ClientID.GENERAL, pConfigValueType, pPropertyName, pPropertyValue, pAddedBy);
+	}
+
+	public ConfigValue(ClientID pClientID, String pConfigValueType, String pPropertyName, String pPropertyValue, UsersID pAddedBy)
 	{
 		this.fActive = true;
+		this.fClientID = pClientID;
 		this.fConfigValueType = pConfigValueType;
 		this.fPropertyName = pPropertyName;
 		this.fPropertyValue = pPropertyValue;
@@ -69,10 +77,10 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 		return DB_CONNECTOR.loadRecord(pConfigValueID, true);
 	}
 
-	public static ConfigValue findByName(String pConfigType, String pPropertyName)
+	public static ConfigValue findByNameForClient(ClientID pClientID, String pConfigType, String pPropertyName)
 			throws SQLException
 	{
-		ConfigValueList list = ConfigValueList.loadByTypeAndName(pConfigType, pPropertyName);
+		ConfigValueList list = ConfigValueList.loadByTypeAndNameForClient(pClientID, pConfigType, pPropertyName);
 		if (list.size() == 0)
 			return null;
 		if (list.size() == 1)
@@ -91,6 +99,11 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 	public void setActive(boolean pActive)
 	{
 		this.fActive = pActive;
+	}
+
+	@Column(name = CLIENTID_COLUMN)
+	public ClientID getClientID() {
+		return this.fClientID;
 	}
 
 	@Column(name = CONFIG_TYPE_COLUMN)
