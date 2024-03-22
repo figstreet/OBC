@@ -1,12 +1,14 @@
 
-ALTER TABLE [dbo].[amazonpricing]  WITH CHECK ADD
-CONSTRAINT [FK_users_amazonpricing_added_by] FOREIGN KEY([azp_added_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "amazonpricing" DROP CONSTRAINT if exists "FK_users_amazonpricing_added";
+ALTER TABLE "amazonpricing" DROP CONSTRAINT if exists "FK_users_amazonpricing_lastupdate";
+ALTER TABLE "amazonpricing" DROP CONSTRAINT if exists "FK_vendor_product_amazonpricing";
 
-ALTER TABLE [dbo].[amazonpricing]  WITH CHECK ADD
-CONSTRAINT [FK_users_amazonpricing_lastupdated_by] FOREIGN KEY([azp_lastupdated_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "amazonpricing" ADD CONSTRAINT "FK_users_amazonpricing_added" FOREIGN KEY (azp_added_by)
+    references "users"(usid) CHECK;
 
-ALTER TABLE [dbo].[amazonpricing]  WITH CHECK ADD
-CONSTRAINT [FK_vendor_product_amazonpricing] FOREIGN KEY([azp_vpid])
-REFERENCES [dbo].[vendor_product] ([vpid]);
+ALTER TABLE "amazonpricing" ADD CONSTRAINT "FK_users_amazonpricing_lastupdate" FOREIGN KEY (azp_lastupdated_by)
+    references "users"(usid) CHECK;
+
+ALTER TABLE "amazonpricing" ADD CONSTRAINT "FK_vendor_product_amazonpricing" FOREIGN KEY (azp_vpid)
+    references "vendor_product"(vpid) CHECK;
+

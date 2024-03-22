@@ -1,16 +1,18 @@
 
-ALTER TABLE [dbo].[vendor_product]  WITH CHECK ADD
-CONSTRAINT [FK_users_vendor_product_added_by] FOREIGN KEY([vp_added_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "vendor_product" DROP CONSTRAINT if exists "FK_users_vendor_product_added";
+ALTER TABLE "vendor_product" DROP CONSTRAINT if exists "FK_users_vendor_product_lastupdated";
+ALTER TABLE "vendor_product" DROP CONSTRAINT if exists "FK_product_vendor_product";
+ALTER TABLE "vendor_product" DROP CONSTRAINT if exists "FK_vendor_vendor_product";
 
-ALTER TABLE [dbo].[vendor_product]  WITH CHECK ADD
-CONSTRAINT [FK_users_vendor_product_lastupdated_by] FOREIGN KEY([vp_lastupdated_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "vendor_product" ADD CONSTRAINT "FK_users_vendor_product_added" FOREIGN KEY (vp_added_by)
+    references "users"(usid) CHECK;
 
-ALTER TABLE [dbo].[vendor_product]  WITH CHECK ADD
-CONSTRAINT [FK_vendor_product_product] FOREIGN KEY([vp_prid])
-REFERENCES [dbo].[product] ([prid]);
+ALTER TABLE "vendor_product" ADD CONSTRAINT "FK_users_vendor_product_lastupdated" FOREIGN KEY (vp_lastupdated_by)
+    references "users"(usid) CHECK;
 
-ALTER TABLE [dbo].[vendor_product]  WITH CHECK ADD
-CONSTRAINT [FK_vendor_product_vendor] FOREIGN KEY([vp_vdid])
-REFERENCES [dbo].[vendor] ([vdid]);
+ALTER TABLE "vendor_product" ADD CONSTRAINT "FK_product_vendor_product" FOREIGN KEY (vp_prid)
+    references "product"(prid) CHECK;
+
+ALTER TABLE "vendor_product" ADD CONSTRAINT "FK_vendor_vendor_product" FOREIGN KEY (vp_vdid)
+    references "vendor"(vdid) CHECK;
+

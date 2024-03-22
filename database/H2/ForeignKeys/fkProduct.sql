@@ -1,8 +1,10 @@
 
-ALTER TABLE [dbo].[product]  WITH CHECK ADD 
-CONSTRAINT [FK_users_product_added_by] FOREIGN KEY([pr_added_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "product" DROP CONSTRAINT if exists "FK_users_product_added";
+ALTER TABLE "product" DROP CONSTRAINT if exists "FK_users_product_lastupdated";
 
-ALTER TABLE [dbo].[product]  WITH CHECK ADD
-CONSTRAINT [FK_users_product_lastupdated_by] FOREIGN KEY([pr_lastupdated_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "product" ADD CONSTRAINT "FK_users_product_added" FOREIGN KEY (pr_added_by)
+    references "users"(usid) CHECK;
+
+ALTER TABLE "product" ADD CONSTRAINT "FK_users_product_lastupdated" FOREIGN KEY (pr_lastupdated_by)
+    references "users"(usid) CHECK;
+

@@ -1,12 +1,14 @@
 
-ALTER TABLE [dbo].[amazonsalesrank]  WITH CHECK ADD
-CONSTRAINT [FK_users_amazonsalesrank_added_by] FOREIGN KEY([azsr_added_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "amazonsalesrank" DROP CONSTRAINT if exists "FK_users_amazonsalesrank_added";
+ALTER TABLE "amazonsalesrank" DROP CONSTRAINT if exists "FK_users_amazonsalesrank_lastupdated";
+ALTER TABLE "amazonsalesrank" DROP CONSTRAINT if exists "FK_vendor_product_amazonsalesrank";
 
-ALTER TABLE [dbo].[amazonsalesrank]  WITH CHECK ADD
-CONSTRAINT [FK_users_amazonsalesrank_lastupdated_by] FOREIGN KEY([azsr_lastupdated_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "amazonsalesrank" ADD CONSTRAINT "FK_users_amazonsalesrank_added" FOREIGN KEY (azsr_added_by)
+    references "users"(usid) CHECK;
 
-ALTER TABLE [dbo].[amazonsalesrank]  WITH CHECK ADD
-CONSTRAINT [FK_vendor_product_amazonsalesrank] FOREIGN KEY([azsr_vpid])
-REFERENCES [dbo].[vendor_product] ([vpid]);
+ALTER TABLE "amazonsalesrank" ADD CONSTRAINT "FK_users_amazonsalesrank_lastupdated" FOREIGN KEY (azsr_lastupdated_by)
+    references "users"(usid) CHECK;
+
+ALTER TABLE "amazonsalesrank" ADD CONSTRAINT "FK_vendor_product_amazonsalesrank" FOREIGN KEY (azsr_vpid)
+    references "vendor_product"(vpid) CHECK;
+

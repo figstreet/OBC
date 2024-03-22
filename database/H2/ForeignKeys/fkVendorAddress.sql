@@ -1,12 +1,14 @@
 
-ALTER TABLE [dbo].[vendoraddress]  WITH CHECK ADD
-CONSTRAINT [FK_users_vendoraddress_added_by] FOREIGN KEY([vda_added_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "vendoraddress" DROP CONSTRAINT if exists "FK_users_vendoraddress_added";
+ALTER TABLE "vendoraddress" DROP CONSTRAINT if exists "FK_users_vendoraddress_lastupdated";
+ALTER TABLE "vendoraddress" DROP CONSTRAINT if exists "FK_vendor_vendoraddress";
 
-ALTER TABLE [dbo].[vendoraddress]  WITH CHECK ADD
-CONSTRAINT [FK_users_vendoraddress_lastupdate_by] FOREIGN KEY([vda_lastupdated_by])
-REFERENCES [dbo].[users] ([usid]);
+ALTER TABLE "vendoraddress" ADD CONSTRAINT "FK_users_vendoraddress_added" FOREIGN KEY (vda_added_by)
+    references "users"(usid) CHECK;
 
-ALTER TABLE [dbo].[vendoraddress]  WITH CHECK ADD
-CONSTRAINT [FK_vendor_vendoraddress] FOREIGN KEY([vda_vdid])
-REFERENCES [dbo].[vendor] ([vdid]);
+ALTER TABLE "vendoraddress" ADD CONSTRAINT "FK_users_vendoraddress_lastupdated" FOREIGN KEY (vda_lastupdated_by)
+    references "users"(usid) CHECK;
+
+ALTER TABLE "vendoraddress" ADD CONSTRAINT "FK_vendor_vendoraddress" FOREIGN KEY (vda_vdid)
+    references "vendor"(vdid) CHECK;
+
