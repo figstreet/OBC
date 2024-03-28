@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<datastore>
+	<databaseconnection>
+		<credentials>
+			<username>sa</username>
+			<password>OBCdevelopment!</password>
+		</credentials>
+		<dbserver>localhost</dbserver>
+		<dbport>8091</dbport>
+		<driverclass>org.h2.Driver</driverclass>
+		<dbtype>H2 Server</dbtype>
+		<dbprotocol>jdbc:h2</dbprotocol>
+		<databasepath>/apps/OBC/database/</databasepath>
+		<dbname>OBC_APP</dbname>
+		<h2SSL>true</h2SSL>
+		<h2AutoCreateDB>false</h2AutoCreateDB>
+		<h2mvstore>false</h2mvstore>
+		<h2LockTimeoutMS>10000</h2LockTimeoutMS>
+		
+		<maxActive>10</maxActive>
+		<maxIdle>5</maxIdle>
+	</databaseconnection>
+</datastore>
