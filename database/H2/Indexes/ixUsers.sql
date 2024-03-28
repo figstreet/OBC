@@ -1,5 +1,10 @@
 
-CREATE NONCLUSTERED INDEX [IX_users_added_by]
-ON [dbo].[users] ( [us_added_by] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+DROP INDEX if exists "IX_users_added";
+DROP INDEX if exists "IX_users_lastupdated";
+
+CREATE INDEX "IX_users_added"
+    ON "users" ( us_added_by );
+
+CREATE INDEX "IX_users_lastupdated"
+    ON "users" ( us_lastupdated_by );
+

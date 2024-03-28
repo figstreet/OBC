@@ -1,25 +1,22 @@
 
-CREATE NONCLUSTERED INDEX [IX_history_prid]
-ON [dbo].[history] ( [hi_prid] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+DROP INDEX if exists "IX_history_added";
+DROP INDEX if exists "IX_history_prid";
+DROP INDEX if exists "IX_history_vdid";
+DROP INDEX if exists "IX_history_vdaid";
+DROP INDEX if exists "IX_history_vdcid";
 
-CREATE NONCLUSTERED INDEX [IX_history_vdid]
-ON [dbo].[history] ( [hi_vdid] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+CREATE INDEX "IX_history_added"
+    ON "history" ( hi_added_by );
 
-CREATE NONCLUSTERED INDEX [IX_history_vdaid]
-ON [dbo].[history] ( [hi_vdaid] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+CREATE INDEX "IX_history_prid"
+    ON "history" ( hi_prid );
 
-CREATE NONCLUSTERED INDEX [IX_history_vdcid]
-ON [dbo].[history] ( [hi_vdcid] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+CREATE INDEX "IX_history_vdid"
+    ON "history" ( hi_vdid );
 
-CREATE NONCLUSTERED INDEX [IX_history_added_by]
-ON [dbo].[history] ( [hi_added_by] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+CREATE INDEX "IX_history_vdaid"
+    ON "history" ( hi_vdaid );
+
+CREATE INDEX "IX_history_vdcid"
+    ON "history" ( hi_vdcid );
+

@@ -1,11 +1,14 @@
 
-CREATE NONCLUSTERED INDEX [IX_amazonsalesrank_added_by]
-ON [dbo].[amazonsalesrank] ( [azsr_added_by] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
 
-CREATE NONCLUSTERED INDEX [IX_amazonsalesrank_vpid]
-ON [dbo].[amazonsalesrank] ( [azsr_vpid] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+DROP INDEX if exists "IX_amazonsalesrank_added";
+DROP INDEX if exists "IX_amazonsalesrank_lastupdated";
+DROP INDEX if exists "IX_amazonsalesrank_vpid";
 
+CREATE INDEX "IX_amazonsalesrank_added"
+    ON "amazonsalesrank" ( azsr_added_by );
+
+CREATE INDEX "IX_amazonsalesrank_lastupdated"
+   ON "amazonsalesrank" ( azsr_lastupdated_by );
+
+CREATE INDEX "IX_amazonsalesrank_vpid"
+    ON "amazonsalesrank" ( azsr_vpid );

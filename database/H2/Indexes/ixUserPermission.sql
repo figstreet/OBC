@@ -1,5 +1,14 @@
 
-CREATE NONCLUSTERED INDEX [IX_userpermission_added_by]
-ON [dbo].[userpermission] ( [up_added_by] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+DROP INDEX if exists "IX_userpermission_added";
+DROP INDEX if exists "IX_userpermission_lastupdated";
+DROP INDEX if exists "IX_userpermission_usid";
+
+CREATE INDEX "IX_userpermission_added"
+    ON "userpermission" ( up_added_by );
+
+CREATE INDEX "IX_userpermission_lastupdated"
+    ON "userpermission" ( up_lastupdated_by );
+
+CREATE INDEX "IX_userpermission_usid"
+    ON "userpermission" ( up_usid );
+

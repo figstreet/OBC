@@ -1,5 +1,14 @@
 
-CREATE NONCLUSTERED INDEX [IX_productoption_added_by]
-ON [dbo].[productoption] ( [pro_added_by] ASC )
-WITH (PAD_INDEX = ON, FILLFACTOR = 90)
-ON INDEX_FG;
+DROP INDEX if exists "IX_productoption_added";
+DROP INDEX if exists "IX_productoption_lastupdated";
+DROP INDEX if exists "IX_productoption_prid";
+
+CREATE INDEX "IX_productoption_added"
+    ON "productoption" ( pro_added_by );
+
+CREATE INDEX "IX_productoption_lastupdated"
+    ON "productoption" ( pro_lastupdated_by );
+
+CREATE INDEX "IX_productoption_prid"
+    ON "productoption" ( pro_prid );
+
