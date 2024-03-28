@@ -1,21 +1,14 @@
 
-GO
+drop trigger if exists users_insert;
+drop trigger if exists users_update;
 
-CREATE TRIGGER [dbo].[trgUsersInsertUpdate] ON [dbo].[users]
-AFTER INSERT, UPDATE
-AS
-BEGIN
-	if @@ROWCOUNT = 0 return
-	SET NOCOUNT ON;
+create trigger users_insert
+    before insert
+               on "users"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-	update users set us_added_dt = GETDATE()
-	from users inner join INSERTED AS I
-		on users.usid = I.usid
-	left join DELETED as D
-		on users.usid = D.usid
-	where users.us_added_dt is null and D.usid is null;
-	
-	update users set us_lastupdated_dt = GETDATE()
-	from users inner join INSERTED AS I
-		on users.usid = I.usid
-END
+create trigger users_update
+    before update
+               on "users"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
+

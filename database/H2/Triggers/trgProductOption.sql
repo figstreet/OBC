@@ -1,21 +1,14 @@
 
-GO
+drop trigger if exists productoption_insert;
+drop trigger if exists productoption_update;
 
-CREATE TRIGGER [dbo].[trgProductOptionInsertUpdate] ON [dbo].[productoption]
-AFTER INSERT, UPDATE
-AS
-BEGIN
-	if @@ROWCOUNT = 0 return
-	SET NOCOUNT ON;
-	
-	update productoption set pro_added_dt = GETDATE()
-	from productoption inner join INSERTED AS I
-		on productoption.proid = I.proid
-	left join DELETED as D
-		on productoption.proid = D.proid
-	where productoption.pro_added_dt is null and D.proid is null;
-	
-	update productoption set pro_lastupdated_dt = GETDATE()
-	from productoption inner join INSERTED AS I
-		on productoption.proid = I.proid;
-END
+create trigger productoption_insert
+    before insert
+               on "productoption"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
+
+create trigger productoption_update
+    before update
+               on "productoption"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
+

@@ -1,20 +1,14 @@
 
-GO
+drop trigger if exists vendoraddress_insert;
+drop trigger if exists vendoraddress_update;
 
-CREATE TRIGGER [dbo].[trgVendorAddressInsertUpdate] ON [dbo].[vendoraddress] AFTER INSERT, UPDATE
-AS
-BEGIN
-if @@ROWCOUNT = 0 return
-SET NOCOUNT ON;
+create trigger vendoraddress_insert
+    before insert
+               on "vendoraddress"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update vendoraddress set vda_added_dt = GETDATE()
-from vendoraddress inner join INSERTED AS I
-	on vendoraddress.vdaid = I.vdaid
-left join DELETED as D
-	on vendoraddress.vdaid = D.vdaid
-where vendoraddress.vda_added_dt is null and D.vdaid is null;
+create trigger vendoraddress_update
+    before update
+               on "vendoraddress"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update vendoraddress set vda_lastupdated_dt = GETDATE()
-from vendoraddress inner join INSERTED AS I
-	on vendoraddress.vdaid = I.vdaid
-END

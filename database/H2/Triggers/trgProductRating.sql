@@ -1,22 +1,14 @@
 
-GO
+drop trigger if exists productrating_insert;
+drop trigger if exists productrating_update;
 
-CREATE TRIGGER [dbo].[trgProductRatingInsertUpdate] ON [dbo].[productrating]
-AFTER INSERT, UPDATE
-AS
-BEGIN
-	if @@ROWCOUNT = 0 return
-	SET NOCOUNT ON;
-	
-	update productrating set prr_added_dt = GETDATE()
-	from productrating inner join INSERTED AS I
-		on productrating.prrid = I.prrid
-	left join DELETED as D
-		on productrating.prrid = D.prrid
-	where productrating.prr_added_dt is null and D.prrid is null;
-	
+create trigger productrating_insert
+    before insert
+               on "productrating"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-	update productrating set prr_lastupdated_dt = GETDATE()
-	from productrating inner join INSERTED AS I
-		on productrating.prrid = I.prrid;
-END
+create trigger productrating_update
+    before update
+               on "productrating"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
+

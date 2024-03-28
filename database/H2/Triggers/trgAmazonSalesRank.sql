@@ -1,21 +1,14 @@
 
-GO
+drop trigger if exists amazonsalesrank_insert;
+drop trigger if exists amazonsalesrank_update;
 
-CREATE TRIGGER [dbo].[trgAmazonSalesRankInsertUpdate] ON [dbo].[amazonsalesrank]
-AFTER INSERT, UPDATE
-AS
-BEGIN
-if @@ROWCOUNT = 0 return
-SET NOCOUNT ON;
+create trigger amazonsalesrank_insert
+    before insert
+               on "amazonsalesrank"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update amazonsalesrank set azsr_added_dt = GETDATE()
-	from amazonsalesrank inner join INSERTED AS I
-		on amazonsalesrank.azsrid = I.azsrid
-	left join DELETED as D
-		on amazonsalesrank.azsrid = D.azsrid
-	where amazonsalesrank.azsr_added_dt is null and D.azsrid is null;
+create trigger amazonsalesrank_update
+    before update
+               on "amazonsalesrank"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update amazonsalesrank set azsr_lastupdated_dt = GETDATE()
-from amazonsalesrank inner join INSERTED AS I
-	on amazonsalesrank.azsrid = I.azsrid
-END

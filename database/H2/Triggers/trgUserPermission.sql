@@ -1,20 +1,14 @@
 
-GO
+drop trigger if exists userpermission_insert;
+drop trigger if exists userpermission_update;
 
-CREATE TRIGGER [dbo].[trgUserPermissionInsertUpdate] ON [dbo].[userpermission] AFTER INSERT, UPDATE
-AS
-BEGIN
-if @@ROWCOUNT = 0 return
-SET NOCOUNT ON;
+create trigger userpermission_insert
+    before insert
+               on "userpermission"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update userpermission set up_added_dt = GETDATE()
-from userpermission inner join INSERTED AS I
-	on userpermission.upid = I.upid
-left join DELETED as D
-	on userpermission.upid = D.upid
-where userpermission.up_added_dt is null and D.upid is null;
+create trigger userpermission_update
+    before update
+               on "userpermission"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update userpermission set up_lastupdated_dt = GETDATE()
-from userpermission inner join INSERTED AS I
-	on userpermission.upid = I.upid
-END

@@ -1,20 +1,14 @@
 
-GO
+drop trigger if exists configvalue_insert;
+drop trigger if exists configvalue_update;
 
-CREATE TRIGGER [dbo].[trgConfigValueInsertUpdate] ON [dbo].[configvalue] AFTER INSERT, UPDATE
-AS
-BEGIN
-if @@ROWCOUNT = 0 return
-SET NOCOUNT ON;
+create trigger configvalue_insert
+    before insert
+               on "configvalue"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update configvalue set cv_added_dt = GETDATE()
-from configvalue inner join INSERTED AS I
-	on configvalue.cvid = I.cvid
-left join DELETED as D
-	on configvalue.cvid = D.cvid
-where configvalue.cv_added_dt is null and D.cvid is null;
+create trigger configvalue_update
+    before update
+               on "configvalue"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update configvalue set cv_lastupdated_dt = GETDATE()
-from configvalue inner join INSERTED AS I
-	on configvalue.cvid = I.cvid
-END

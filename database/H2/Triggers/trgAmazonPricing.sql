@@ -1,21 +1,14 @@
 
-GO
+drop trigger if exists amazonpricing_insert;
+drop trigger if exists amazonpricing_update;
 
-CREATE TRIGGER [dbo].[trgAmazonPricingInsertUpdate] ON [dbo].[amazonpricing] 
-AFTER INSERT, UPDATE
-AS
-BEGIN
-if @@ROWCOUNT = 0 return
-SET NOCOUNT ON;
+create trigger amazonpricing_insert
+    before insert
+               on "amazonpricing"
+                  for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update amazonpricing set azp_added_dt = GETDATE()
-	from amazonpricing inner join INSERTED AS I
-		on amazonpricing.azpid = I.azpid
-	left join DELETED as D
-		on amazonpricing.azpid = D.azpid
-	where amazonpricing.azp_added_dt is null and D.azpid is null;
+create trigger amazonpricing_update
+    before update
+               on "amazonpricing"
+               for each row call "com.figstreet.core.h2server.databasetriggers.LastupdateTrigger";
 
-update amazonpricing set azp_lastupdated_dt = GETDATE()
-from amazonpricing inner join INSERTED AS I
-	on amazonpricing.azpid = I.azpid
-END
