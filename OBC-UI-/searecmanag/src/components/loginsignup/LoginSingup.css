@@ -1,0 +1,113 @@
+.container {
+    width: 60%;
+    max-width: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 255, 255);
+    padding: 40px 50px 60px;
+    border-radius: 5px;
+  }
+  .header{
+    margin-bottom: 15px;
+    font-size:larger;
+    font-family: sans-serif;
+    margin-left: 20px;
+    font-weight: bolder;
+  }
+  .text{
+    color: rgb(34, 9, 78);
+  }
+.inputs{
+   
+    margin-top: 20px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    gap: 10px;
+  }
+  .input {
+    width: 480%;
+    height: 40px;
+    align-items: center;
+    margin: auto;
+    display: flex;
+    background: #cccccc;
+    border-radius: 10px;
+   
+      }
+ .input image{
+    margin-left: 10px;
+
+ }
+ .input input{
+    height: 40px;
+    width: 200px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #797979;
+    font-size: 19px;
+    margin-left: 9px;
+ }
+ .forgot-password{
+    padding-left: 62px;
+    margin-top: 15px;
+    color: #797979;
+    font-size: 15px;
+ }
+ .forgot-password span{
+    color: rgb(14, 14, 122);
+    cursor: pointer;
+    font-weight: light;
+
+ }
+ .submit-container{
+    display: flex;
+    gap: 5px;
+    margin: 20px auto;
+    align-items: center;
+    padding-left: 85px;
+ }
+ .submit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height:30px;
+    color: aliceblue;
+    background: #0f3150;
+    border-radius: 5px;
+    font-size: 19px;
+    font-weight: bolder;
+    cursor: pointer;
+ }
+ .register-option button {
+    background-color: transparent;
+    border: none;
+    color: #093c72;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: medium;
+    margin-bottom: 0px;
+   
+  }
+  .register-option{
+    padding-left: 62px;
+    font-weight: light;
+    font-size: medium;
+    color: #797979;
+  }
+  
+  .register-option button:hover {
+    text-decoration: underline;
+  }
+  .cancel-register button {
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
