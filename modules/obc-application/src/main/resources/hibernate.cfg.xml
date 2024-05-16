@@ -5,14 +5,14 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- Database Connection Params - SQLServer -->
-		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="connection.url">jdbc:sqlserver://sql.figstreet.com:1433;databaseName=obc_db;appName=OBC_bgapp;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.figstreet.com;loginTimeout=30;</property>
+		<property name="connection.driver_class">org.h2.Driver</property>
+		<property name="connection.url">jdbc:h2:mem:test_db;</property>
 		<!-- jTDS driver
 		<property name="connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
 		<property name="connection.url">jdbc:jtds:sqlserver://sql.figstreet.freeddns.org:1433/OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>
 		-->
-		<property name="connection.username">obc_user</property>
-		<property name="connection.password">WeWouldAchieve!1</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
 		<property name="connection.autocommit">true</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
 
