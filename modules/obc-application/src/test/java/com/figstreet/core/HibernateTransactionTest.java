@@ -2,14 +2,26 @@ package com.figstreet.core;
 
 import org.hibernate.Session;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
 public class HibernateTransactionTest {
+
+    @BeforeClass
+    public static void initialize() throws MalformedURLException {
+        Path h2DBConfig = Paths.get("src/test/resources/hibernate.test.xml");
+        Path logConfig = Paths.get("src/test/resources/log4j.test.xml");
+        Logging.initialize(logConfig.toAbsolutePath().toString());
+        HibernateConfiguration.initialize(h2DBConfig.toUri().toURL());
+    }
 
     @Test
     public void testHibernateTransactionopenOnceInAThread() throws SQLException {
