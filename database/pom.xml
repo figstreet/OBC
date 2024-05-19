@@ -74,7 +74,7 @@
                                 <fileset dir="./H2/Triggers/">
                                     <include name="*.sql"></include>
                                 </fileset>
-                                <fileset dir="./SQLServer/H2/">
+                                <fileset dir="./H2/Indexes">
                                     <include name="*.sql"></include>
                                 </fileset>
                                 <fileset dir="./H2/ForeignKeys/">
