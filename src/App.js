@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import { LoginSignup } from './Components/LoginSgnp/LoginSingup';
+import LoginSignup from './Components/LoginSgnp/LoginSingup';
+
 
 function App() {
   return (
