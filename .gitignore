@@ -1,3 +1,4 @@
 /modules/obc-application/target/
 /modules/amazon-mws/target/
 /database/target/
+/modules/obc-application/src/test/logs/test.log
