@@ -35,37 +35,52 @@
                     </goals>
                     <configuration>
                         <target>
-                            <concat destfile="./target/OBC_DB.sql"
+                            <concat destfile="./target/SQLSERVER-OBC_DB.sql"
                                     force="yes">
-                                <fileset dir=".">
+                                <fileset dir="./SQLServer/">
                                     <include name="create_obc_db.sql"></include>
                                 </fileset>
-                                <fileset dir=".">
+                                <fileset dir="./SQLServer/">
                                     <include name="use_obc_db.sql"></include>
                                 </fileset>
-                                <fileset dir="./Tables/">
+                                <fileset dir="./SQLServer/Tables/">
                                     <include name="*.sql"></include>
                                 </fileset>
-                                <fileset dir=".">
+                                <fileset dir="./SQLServer/">
                                     <include name="use_obc_db.sql"></include>
                                 </fileset>
-                                <fileset dir="./Triggers/">
+                                <fileset dir="./SQLServer/Triggers/">
                                     <include name="*.sql"></include>
                                 </fileset>
-                                <fileset dir=".">
+                                <fileset dir="./SQLServer/">
                                     <include name="use_obc_db.sql"></include>
                                 </fileset>
-                                <fileset dir="./Indexes/">
+                                <fileset dir="./SQLServer/Indexes/">
                                     <include name="*.sql"></include>
                                 </fileset>
-                                <fileset dir=".">
+                                <fileset dir="./SQLServer/">
                                     <include name="use_obc_db.sql"></include>
                                 </fileset>
-                                <fileset dir="./ForeignKeys/">
+                                <fileset dir="./SQLServer/ForeignKeys/">
                                     <include name="*.sql"></include>
                                 </fileset>
                             </concat>
 
+                            <concat destfile="./target/H2-OBC_DB.sql"
+                                    force="yes">
+                                <fileset dir="./H2/Tables/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                                <fileset dir="./H2/Triggers/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                                <fileset dir="./H2/Indexes">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                                <fileset dir="./H2/ForeignKeys/">
+                                    <include name="*.sql"></include>
+                                </fileset>
+                            </concat>
                         </target>
                     </configuration>
                 </execution>

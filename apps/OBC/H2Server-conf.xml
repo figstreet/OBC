@@ -1,0 +1,46 @@
+<h2server>
+    <log4jconf>/apps/OBC/H2Server-log.conf</log4jconf>
+
+    <!-- JAVA keystore file that contains SSL certificate and key -->
+    <keyStoreFile secure="true">/apps/OBC/keys/H2Server.keystore</keyStoreFile>
+    <!-- JAVA keystore file type (jceks is the default) -->
+    <keyStoreType secure="true">pkcs12</keyStoreType>
+    <!-- Encoding type used -->
+    <keyStoreEncodingType secure="true">HEX</keyStoreEncodingType>
+    <!-- Algorithm used for the Hash used to generate the keystore password.  Generated using CryptoApp genKeys functionality -->
+    <keyStoreAlgorithm secure="true">HMAC_SHA_256</keyStoreAlgorithm>
+    <!-- Keystore password salt.  Generated using CryptoApp genKeys functionality -->
+    <keyStoreSalt secure="true"></keyStoreSalt>
+    <!-- Keystore password key.  Generated using CryptoApp genKeys functionality -->
+    <keyStoreKey secure="true"></keyStoreKey>
+    <!-- Keystore pass code. -->
+    <keyStoreCode secure="true"></keyStoreCode>
+
+
+    <databaseInitURL>jdbc:h2:ssl://localhost:8091//apps/OBC/database/OBC_APP;IFEXISTS=TRUE</databaseInitURL>
+    <adminUser>sa</adminUser>
+    <adminPassword>OBCdevelopment!</adminPassword>
+    <pageCacheKB>65536</pageCacheKB>
+
+
+    <!-- How often the main app checks config file -->
+    <runMainEverySecs>120</runMainEverySecs>
+
+    <!-- When true, main app will stop and start services configured below when this config file changes -->
+    <restartServicesOnConfigChange>true</restartServicesOnConfigChange>
+    <!-- How often service status is checked -->
+    <runProcessorEverySecs>120</runProcessorEverySecs>
+
+    <!-- HTTP UI to manage H2 database -->
+    <startWebServer>true</startWebServer>
+    <webPort>8090</webPort>
+    <webSSL>true</webSSL>
+    <webAllowOthers>true</webAllowOthers> <!-- Others means connections from outside the local machine -->
+
+    <!-- TCP server to access H2 database (alternative is to run H2 in embedded, single user mode) -->
+    <startTcpDatabaseServer>true</startTcpDatabaseServer>
+    <tcpPort>8091</tcpPort>
+    <tcpSSL>true</tcpSSL>
+    <tcpAllowOthers>false</tcpAllowOthers> <!-- Others means connections from outside the local machine -->
+    <tcpAllowDatabaseCreation>false</tcpAllowDatabaseCreation>
+</h2server>
