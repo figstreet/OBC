@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="obc-app" />
         <module name="amazon-mws" />
+        <module name="obc-app" />
       </profile>
     </annotationProcessing>
   </component>
