@@ -11,61 +11,35 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>obc-app</artifactId>
+    <artifactId>obc-web-api</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <description>Online Business Catalog application</description>
+    <description>REST API</description>
     <packaging>jar</packaging>
 
     <properties>
+        <restlet-version>2.4.3</restlet-version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.figstreet</groupId>
-            <artifactId>amazon-mws</artifactId>
+            <artifactId>obc-app</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-            <scope>compile</scope>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet</artifactId>
+            <version>${restlet-version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-            <scope>compile</scope>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet.ext.jackson</artifactId>
+            <version>${restlet-version}</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>2.0.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>2.0.7</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.2.224</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>obc-app-${project.version}</finalName>
+        <finalName>obc-web-api-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -78,7 +52,7 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Implementation-Title>OB Core App</Implementation-Title>
+                            <Implementation-Title>OB Web API</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Vendor>Jonathan Schwehm - Fig Street, LLC</Implementation-Vendor>
                             <Build-Date>${timestamp}</Build-Date>
@@ -89,14 +63,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub Fig Street Apache Maven Repo</name>
-            <url>https://maven.pkg.github.com/figstreet/*</url>
-        </repository>
-    </repositories>
 
     <distributionManagement>
         <repository>
