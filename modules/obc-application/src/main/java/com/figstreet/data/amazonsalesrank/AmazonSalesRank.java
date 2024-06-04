@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -59,12 +60,12 @@ public class AmazonSalesRank extends HibernateDatabaseObject<AmazonSalesRankID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static AmazonSalesRank findByAmazonSalesRankID(AmazonSalesRankID pAmazonSalesRankID) throws SQLException
+	public static AmazonSalesRank findByAmazonSalesRankID(AmazonSalesRankID pAmazonSalesRankID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pAmazonSalesRankID, false);
 	}
 
-	public static AmazonSalesRank getByAmazonSalesRankID(AmazonSalesRankID pAmazonSalesRankID) throws SQLException
+	public static AmazonSalesRank getByAmazonSalesRankID(AmazonSalesRankID pAmazonSalesRankID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pAmazonSalesRankID, true);
 	}

@@ -2,3 +2,4 @@
 /modules/amazon-mws/target/
 /database/target/
 /modules/obc-ui/node_modules/
+/modules/obc-web-api/target/

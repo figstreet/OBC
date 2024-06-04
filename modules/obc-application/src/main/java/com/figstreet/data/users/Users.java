@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -47,7 +48,7 @@ public class Users extends HibernateDatabaseObject<UsersID>
 	private String fFirstName;
 	private String fMiddleName;
 	private String fLastName;
-	private String fPassword;
+	private char[] fPassword;
 	private String fPasswordSalt;
 	private Timestamp fPasswordSet;
 	private String fConfirmationKey;
@@ -74,12 +75,12 @@ public class Users extends HibernateDatabaseObject<UsersID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static Users findByUsersID(UsersID pUsersID) throws SQLException
+	public static Users findByUsersID(UsersID pUsersID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pUsersID, false);
 	}
 
-	public static Users getByUsersID(UsersID pUsersID) throws SQLException
+	public static Users getByUsersID(UsersID pUsersID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pUsersID, true);
 	}
@@ -151,12 +152,12 @@ public class Users extends HibernateDatabaseObject<UsersID>
 	}
 
 	@Column(name = PASSWORD_COLUMN)
-	public String getPassword()
+	public char[] getPassword()
 	{
 		return this.fPassword;
 	}
 
-	public void setPassword(String pPassword)
+	public void setPassword(char[] pPassword)
 	{
 		this.fPassword = pPassword;
 	}

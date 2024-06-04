@@ -3,6 +3,7 @@ package com.figstreet.data.client;
 import com.figstreet.core.ClientID;
 import com.figstreet.core.HibernateDBConnector;
 import com.figstreet.core.HibernateDatabaseObject;
+import com.figstreet.core.RecordNotExistException;
 import com.figstreet.data.users.UsersID;
 import org.hibernate.annotations.Type;
 
@@ -42,12 +43,12 @@ public class Client extends HibernateDatabaseObject<ClientID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static Client findByClientID(ClientID pClientID) throws SQLException
+	public static Client findByClientID(ClientID pClientID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pClientID, false);
 	}
 
-	public static Client getByClientID(ClientID pClientID) throws SQLException
+	public static Client getByClientID(ClientID pClientID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pClientID, true);
 	}

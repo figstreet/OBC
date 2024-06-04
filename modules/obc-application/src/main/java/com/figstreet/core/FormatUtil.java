@@ -1,7 +1,26 @@
 package com.figstreet.core;
 
+import java.util.List;
+
 public class FormatUtil
 {
+
+	public static String comcatenate(List<String> pValues, String pDelim) {
+		StringBuilder retVal = new StringBuilder();
+		if (pValues == null || pValues.isEmpty())
+			return retVal.toString();
+
+		for (String value : pValues) {
+			if (value != null && !value.isEmpty())
+			{
+				if (retVal.length() > 0)
+					retVal.append(pDelim);
+				retVal.append(value);
+			}
+		}
+		return retVal.toString();
+	}
+
 	public static String truncate(String pString, int pMaxLength)
 	{
 		if (pMaxLength < 0)

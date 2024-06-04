@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -53,12 +54,14 @@ public class Vendor extends HibernateDatabaseObject<VendorID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static Vendor findByVendorID(VendorID pVendorID) throws SQLException
+	public static Vendor findByVendorID(VendorID pVendorID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pVendorID, false);
 	}
 
-	public static Vendor getByVendorID(VendorID pVendorID) throws SQLException
+	public static Vendor getByVendorID(VendorID pVendorID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pVendorID, true);
 	}

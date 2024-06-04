@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -56,12 +57,12 @@ public class Codes extends HibernateDatabaseObject<CodesID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static Codes findByCodesID(CodesID pCodesID) throws SQLException
+	public static Codes findByCodesID(CodesID pCodesID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pCodesID, false);
 	}
 
-	public static Codes getByCodesID(CodesID pCodesID) throws SQLException
+	public static Codes getByCodesID(CodesID pCodesID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pCodesID, true);
 	}

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -54,12 +55,14 @@ public class UserPermission extends HibernateDatabaseObject<UserPermissionID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static UserPermission findByUserPermissionID(UserPermissionID pUserPermissionID) throws SQLException
+	public static UserPermission findByUserPermissionID(UserPermissionID pUserPermissionID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pUserPermissionID, false);
 	}
 
-	public static UserPermission getByUserPermissionID(UserPermissionID pUserPermissionID) throws SQLException
+	public static UserPermission getByUserPermissionID(UserPermissionID pUserPermissionID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pUserPermissionID, true);
 	}

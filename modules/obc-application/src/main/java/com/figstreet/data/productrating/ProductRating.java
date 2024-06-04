@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -58,12 +59,14 @@ public class ProductRating extends HibernateDatabaseObject<ProductRatingID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static ProductRating findByProductRatingID(ProductRatingID pProductRatingID) throws SQLException
+	public static ProductRating findByProductRatingID(ProductRatingID pProductRatingID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pProductRatingID, false);
 	}
 
-	public static ProductRating getByProductRatingID(ProductRatingID pProductRatingID) throws SQLException
+	public static ProductRating getByProductRatingID(ProductRatingID pProductRatingID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pProductRatingID, true);
 	}

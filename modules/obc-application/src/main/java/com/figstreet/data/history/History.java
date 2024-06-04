@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.DateUtil;
@@ -127,12 +128,14 @@ public class History extends HibernateDatabaseObject<HistoryID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static History findByHistoryID(HistoryID pHistoryID) throws SQLException
+	public static History findByHistoryID(HistoryID pHistoryID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pHistoryID, false);
 	}
 
-	public static History getByHistoryID(HistoryID pHistoryID) throws SQLException
+	public static History getByHistoryID(HistoryID pHistoryID)
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pHistoryID, true);
 	}

@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.figstreet.core.ClientID;
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -66,13 +67,13 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 	}
 
 	public static ConfigValue findByConfigValueID(ConfigValueID pConfigValueID)
-			throws SQLException
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pConfigValueID, false);
 	}
 
 	public static ConfigValue getByConfigValueID(ConfigValueID pConfigValueID)
-			throws SQLException
+			throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pConfigValueID, true);
 	}

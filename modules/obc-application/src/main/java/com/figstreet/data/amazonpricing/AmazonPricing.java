@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.figstreet.core.RecordNotExistException;
 import org.hibernate.annotations.Type;
 
 import com.figstreet.core.HibernateDBConnector;
@@ -72,12 +73,12 @@ public class AmazonPricing extends HibernateDatabaseObject<AmazonPricingID>
 		this.fAddedBy = pAddedBy;
 	}
 
-	public static AmazonPricing findByAmazonPricingID(AmazonPricingID pAmazonPricingID) throws SQLException
+	public static AmazonPricing findByAmazonPricingID(AmazonPricingID pAmazonPricingID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pAmazonPricingID, false);
 	}
 
-	public static AmazonPricing getByAmazonPricingID(AmazonPricingID pAmazonPricingID) throws SQLException
+	public static AmazonPricing getByAmazonPricingID(AmazonPricingID pAmazonPricingID) throws SQLException, RecordNotExistException
 	{
 		return DB_CONNECTOR.loadRecord(pAmazonPricingID, true);
 	}

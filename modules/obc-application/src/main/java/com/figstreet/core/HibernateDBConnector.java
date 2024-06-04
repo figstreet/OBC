@@ -137,13 +137,13 @@ public class HibernateDBConnector<C extends HibernateDatabaseObject<J>, L extend
 		}
 	}
 
-	public C loadRecord(J pRecordID, boolean pMustExist) throws SQLException
+	public C loadRecord(J pRecordID, boolean pMustExist) throws SQLException, RecordNotExistException
 	{
 		return this.loadRecord(pRecordID, pMustExist, LockMode.NONE);
 	}
 
 	@SuppressWarnings("unchecked")
-	public C loadRecord(J pRecordID, boolean pMustExist, LockMode pLockMode) throws SQLException
+	public C loadRecord(J pRecordID, boolean pMustExist, LockMode pLockMode) throws SQLException, RecordNotExistException
 	{
 		C toReturn = null;
 		if (pRecordID == null)
@@ -163,7 +163,7 @@ public class HibernateDBConnector<C extends HibernateDatabaseObject<J>, L extend
 			{
 				String msg = String.format("No record found for class %s with ID %s", this.getRecordClass(),
 						pRecordID.toString());
-				throw new SQLException(msg);
+				throw new RecordNotExistException(msg);
 			}
 			if (fromDB != null)
 				toReturn = (C) fromDB;
