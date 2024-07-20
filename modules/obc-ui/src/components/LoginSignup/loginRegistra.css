@@ -1,0 +1,154 @@
+.container {
+    width: 60%;
+    max-width: 400px; /* Increased max-width to accommodate form fields better */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 255, 255);
+    padding: 40px 50px 60px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    margin-bottom: 14px;
+    font-size: 19px;
+    font-family: sans-serif;
+    font-weight: bolder;
+    color: rgb(7, 41, 63);
+}
+
+.inputs {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.input {
+    width: 100%;
+    max-width: 350px; /* Ensure the input fields are not too wide */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    background: #f0f0f0; /* Slightly lighter background for better contrast */
+    border-radius: 5px;
+    position: relative;
+}
+
+.input input {
+    height: 100%;
+    width: calc(100% - 40px);
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #333;
+    font-size: 16px; /* Adjust font size for better readability */
+    padding: 0 10px;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    text-align: center;
+    margin: 5px 0; /* Margin adjustment for better spacing */
+}
+
+.forgot-password {
+    margin-top: 15px;
+    color: #797979;
+    font-size: 15px;
+}
+
+.forgot-password span {
+    color: rgb(14, 14, 122);
+    cursor: pointer;
+    font-weight: bold; /* Changed to bold for better visibility */
+}
+
+.login-container, .signup-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.login, .submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px; /* Increased height for better button visibility */
+    color: #ffffff;
+    background: #0f3150;
+    border-radius: 5px;
+    font-size: 16px; /* Adjusted font size */
+    font-weight: bolder;
+    cursor: pointer;
+    border: none;
+}
+
+.gray {
+    background: gray;
+    cursor: not-allowed;
+}
+
+.cancel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px; /* Increased height for consistency */
+    color: #000000;
+    background: transparent;
+    border: 2px solid #000000; /* Added border for visibility */
+    border-radius: 5px;
+    font-size: 16px; /* Adjusted font size */
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.register-option {
+    font-size: 15px; /* Adjusted font size */
+    color: #797979;
+    text-align: center; /* Center text for alignment */
+    margin-top: 20px;
+}
+
+.register-option button {
+    background-color: transparent;
+    border: none;
+    color: #093c72;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 15px; /* Adjusted font size */
+}
+
+.register-option button:hover {
+    text-decoration: underline;
+}
+
+/* Styles for password reset form */
+.reset-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.reset-container .input {
+    width: 100%;
+    max-width: 350px;
+}
+
+.reset-container .submit {
+    background: #09233f; /* Changed color for the reset button */
+}
+
+.success {
+    color: green;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
