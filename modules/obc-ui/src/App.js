@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import LoginSignup from './components/loginsignup/LoginSingup';
+import LoginSignup from './components/LoginSignup/LoginSignup.jsx';
 
 
 
