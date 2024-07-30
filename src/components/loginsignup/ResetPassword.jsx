@@ -13,7 +13,6 @@ const ResetPassword = ({ match }) => {
     const [formValid, setFormValid] = useState(false);
     const newPasswordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
-
     // Validate password format
     const validatePassword = (password) => {
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&/]).{10,25}$/;

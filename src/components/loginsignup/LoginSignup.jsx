@@ -149,7 +149,6 @@ const LoginSignup = () => {
             setResetEmailError("Invalid email format");
             return;
         }
-
         try {
             const response = await fetch('/api/request-password-reset', {
                 method: 'POST',
