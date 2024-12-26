@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 @JsonInclude(Include.NON_NULL)
 public class ClientApiData extends ApiData {
     public static final String NODE_NAME = "client";
-    public static final String LIST_NAME = "clients";
     public static final String ACTIVE_NODE = "active";
     public static final String NAME_NODE = "name";
 

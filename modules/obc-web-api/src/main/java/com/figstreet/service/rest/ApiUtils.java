@@ -6,10 +6,45 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 
 public class ApiUtils {
 
+    public static <E extends ApiData> Document asXmlDocument(ListApiData<E> listApiData) throws ParserConfigurationException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+
+        listApiData.append(doc);
+
+        return doc;
+    }
+
+    public static void outputXml(Document document, OutputStream output)
+            throws TransformerException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(output);
+
+        transformer.transform(source, result);
+    }
 
     public static String asString(Timestamp timestamp) {
         return DateUtil.formatTimestamp(timestamp, DateUtil.ISO8601_TIMESTAMP_FORMAT);
