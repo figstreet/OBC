@@ -18,6 +18,7 @@ import java.sql.SQLException;
 
 public class ClientServerResource extends ServerResource {
     public static final String LOGGING_NAME = ClientServerResource.class.getPackage().getName() + ".ClientServerResource";
+    public static final String URI_PATH = "client";
     public static final String ID_PARAM = "id";
 
     private ClientID fClientID;

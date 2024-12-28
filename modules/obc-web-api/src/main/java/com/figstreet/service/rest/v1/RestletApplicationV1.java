@@ -11,7 +11,10 @@ public class RestletApplicationV1 extends Application {
     public Restlet createInboundRoot() {
         Router router = new Router(getContext());
 
-        router.attach("/clients/{" + ClientServerResource.ID_PARAM + "}", ClientServerResource.class);
+        router.attach("/" + ClientServerResource.URI_PATH + "/{"
+                + ClientServerResource.ID_PARAM + "}", ClientServerResource.class);
+        router.attach("/" + ClientListServerResource.URI_PATH,
+                ClientListServerResource.class);
 
         return router;
     }

@@ -9,6 +9,7 @@ import com.figstreet.service.exception.ClientCommsException;
 import com.figstreet.service.exception.NotFoundException;
 import com.figstreet.service.exception.ServerException;
 import com.figstreet.service.rest.v1.data.ClientApiData;
+import com.figstreet.service.rest.v1.data.ClientListApiData;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
@@ -19,31 +20,19 @@ import java.sql.SQLException;
 
 public class ClientListServerResource extends ServerResource {
     public static final String LOGGING_NAME = ClientListServerResource.class.getPackage().getName() + ".ClientServerResource";
+    public static final String URI_PATH = "clients";
     public static final String ID_PARAM = "id";
 
     private ClientID fClientID;
 
     @Override
     protected void doInit() {
-        String id = getAttribute(ID_PARAM);
-        if (CompareUtil.isEmpty(id)) {
-            Logging.warn(LOGGING_NAME, "doInit", "ClientListServerResource called with no ID.");
-        } else {
-            Logging.info(LOGGING_NAME, "doInit", "ClientListServerResource called for ID: " + id);
-            this.fClientID = new ClientID(id);
-        }
+        // nothing to do
     }
 
     @Get
-    public ClientApiData getClient() {
-        Logging.debugBegin(LOGGING_NAME, "getClient");
-        if (this.fClientID == null) {
-            String msg = "Method called with no ClientID.";
-            Logging.error(LOGGING_NAME, "getClient", msg);
-            throw new ClientCommsException(msg);
-        }
-
-        //TODO - check permissions
+    public ClientListApiData getClientList() {
+        Logging.debugBegin(LOGGING_NAME, "getClientList");
 
         try {
             Client client = Client.getByClientID(this.fClientID);
@@ -55,13 +44,4 @@ public class ClientListServerResource extends ServerResource {
         }
     }
 
-    @Put
-    public void storeClient(Client client) {
-
-    }
-
-    @Delete
-    public void removeClient() {
-
-    }
 }
