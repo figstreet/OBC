@@ -107,6 +107,11 @@ public class ConfigValue extends HibernateDatabaseObject<ConfigValueID>
 		return this.fClientID;
 	}
 
+	@Deprecated
+	public void setClientID(ClientID pClientID) {
+		this.fClientID = pClientID;
+	}
+
 	@Column(name = CONFIG_TYPE_COLUMN)
 	public String getConfigValueType()
 	{

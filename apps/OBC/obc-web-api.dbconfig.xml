@@ -6,14 +6,19 @@
 	<session-factory>
 		<!-- Database Connection Params - SQLServer -->
 		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="connection.url">jdbc:sqlserver://sql.figstreet.com:1433;databaseName=obc_db;appName=OBC_bgapp;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.figstreet.com;loginTimeout=30;</property>
+		<property name="connection.url">jdbc:sqlserver://sql.figstreet.com:1433;databaseName=obc_db;appName=obc-web-api;loginTimeout=20;</property>
+
+		<!-- MS Driver version 12.6
+		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+		<property name="connection.url">jdbc:sqlserver://sql.figstreet.com:1433;databaseName=obc_db;appName=obc-web-api;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.figstreet.com;loginTimeout=30;</property>
+		-->
 		<!-- jTDS driver
 		<property name="connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
-		<property name="connection.url">jdbc:jtds:sqlserver://sql.figstreet.freeddns.org:1433/OBC_DEV;appName=OBC_bgapp;loginTimeout=20</property>
+		<property name="connection.url">jdbc:jtds:sqlserver://sql.figstreet.freeddns.org:1433/OBC_DEV;appName=obc-web-api;loginTimeout=20</property>
 		-->
 		<property name="connection.username">obc_user</property>
 		<property name="connection.password">WeWouldAchieve!1</property>
-		<property name="connection.autocommit">true</property>
+		<property name="connection.autocommit">false</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
 
 		<!-- Extra Hibernate Params -->
@@ -25,9 +30,9 @@
 		<property name="hibernate.c3p0.maxPoolSize">10</property>
 		<property name="hibernate.c3p0.minPoolSize">5</property>
 		<property name="hibernate.c3p0.initialPoolSize">5</property>
-		<property name="hibernate.c3p0.timeout">1800</property>
+		<property name="hibernate.c3p0.timeout">240</property>
 		<property name="hibernate.c3p0.maxStatements">100</property>
-		<property name="hibernate.c3p0.idleConnectionTestPeriod">300</property>
+		<property name="hibernate.c3p0.idleConnectionTestPeriod">120</property>
 		<property name="hibernate.c3p0.acquireIncrement">2</property>
 		<property name="hibernate.c3p0.testConnectionOnCheckin">true</property>
 		<property name="hibernate.c3p0.preferredTestQuery">select count(*) from [codes] where coid is null</property>

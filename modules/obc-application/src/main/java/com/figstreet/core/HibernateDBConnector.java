@@ -224,8 +224,12 @@ public class HibernateDBConnector<C extends HibernateDatabaseObject<J>, L extend
 			}
 			if (pArgs != null && !pArgs.isEmpty())
 			{
-				for (Entry<String, Object> arg : pArgs.entrySet())
+				String args = "";
+				for (Entry<String, Object> arg : pArgs.entrySet()) {
 					query.setParameter(arg.getKey(), arg.getValue());
+					args += arg.getKey() + " -> " + arg.getValue() + "; ";
+				}
+				Logging.debug(LOGGER_NAME, "loadList", "Args: " + args);
 			}
 
 			toReturn.addAll(query.getResultList());
@@ -274,8 +278,12 @@ public class HibernateDBConnector<C extends HibernateDatabaseObject<J>, L extend
 			}
 			if (pArgs != null && !pArgs.isEmpty())
 			{
-				for (Entry<String, Object> arg : pArgs.entrySet())
+				String args = "";
+				for (Entry<String, Object> arg : pArgs.entrySet()) {
 					query.setParameter(arg.getKey(), arg.getValue());
+					args += arg.getKey() + " -> " + arg.getValue() + "; ";
+				}
+				Logging.debug(LOGGER_NAME, "loadPkList", "Args: " + args);
 			}
 
 			dbList = query.list();

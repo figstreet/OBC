@@ -379,13 +379,21 @@
 <!--            <artifactId>mchange-commons-java</artifactId>-->
 <!--            <version>0.2.20</version>-->
 <!--        </dependency>-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.microsoft.sqlserver</groupId>-->
+<!--            <artifactId>mssql-jdbc</artifactId>-->
+<!--            <version>12.6.0.jre8</version>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>12.6.0.jre8</version>
+            <version>6.2.2.jre8</version>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/oro/oro &ndash;&gt;-->
+
+
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/oro/oro &ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>oro</groupId>-->
 <!--            <artifactId>oro</artifactId>-->
@@ -409,13 +417,20 @@
 <!--            <artifactId>proguard-retrace</artifactId>-->
 <!--            <version>6.2.2</version>-->
 <!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.slf4j/slf4j-api &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--            <version>2.0.11</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet &ndash;&gt;-->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.zaxxer/SparseBitSet &ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>com.zaxxer</groupId>-->
 <!--            <artifactId>SparseBitSet</artifactId>-->

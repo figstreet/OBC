@@ -32,15 +32,14 @@ public class SystemInitializer implements AutoCloseable
 
 	public static void initializeDB(String pDatabaseConfigPath) throws MalformedURLException, SQLException
 	{
-		Logging.info(LOGGER_NAME, "initializeDatabase", "Connecting to database ...");
-
+		Logging.infof(LOGGER_NAME, "initializeDB", "Initializing configuration using %s", pDatabaseConfigPath);
 		File dbConfigFile = new File(pDatabaseConfigPath);
 		HibernateConfiguration.initialize(dbConfigFile.toURI().toURL());
 
-		Logging.info(LOGGER_NAME, "initializeDatabase", "Testing database ...");
+		Logging.info(LOGGER_NAME, "initializeDB", "Testing database ...");
 		HibernateSessionFactory.openConnection();
 
-		Logging.info(LOGGER_NAME, "initializeDatabase", "Database initialized");
+		Logging.info(LOGGER_NAME, "initializeDB", "Database initialized");
 	}
 
 	// Shutdown methods

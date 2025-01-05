@@ -19,8 +19,9 @@ public class RefreshCacheManager extends Thread
 	private static final String CONFIG_NAME = "CACHETIMESTAMPS";
 	public static final String LOGGER_NAME = RefreshCacheManager.class.getPackage().toString() + ".RefreshCacheManager";
 
-	private static final long SLEEP_MS = 2000L;
-	private static final long RUN_INTERVAL_MS = 1000L * 60L * 15L;
+	private static final long SLEEP_MS = 1000L;
+	private static final long DEFAULT_RUN_INTERVAL_MS = 1000L * 60L * 15L;
+	private long fRunIntervalMS = DEFAULT_RUN_INTERVAL_MS;
 
 	//Initialization-on-demand holder
 	private static class Holder
@@ -213,7 +214,7 @@ public class RefreshCacheManager extends Thread
 				{
 					Logging.error(LOGGER_NAME, "run", "Unexpected error in doWork, will try again", e);
 				}
-				nextRun = System.currentTimeMillis() + RUN_INTERVAL_MS;
+				nextRun = System.currentTimeMillis() + this.fRunIntervalMS;
 			}
 			try
 			{
@@ -228,6 +229,20 @@ public class RefreshCacheManager extends Thread
 		this.fStopRunning = false;
 		this.fIsRunning = false;
 	}
+
+	public long getRunIntervalMS()
+	{
+		return this.fRunIntervalMS;
+	}
+
+	public void setRunIntervalMS(long pRunIntervalMS)
+	{
+		if (pRunIntervalMS > 0)
+			this.fRunIntervalMS = pRunIntervalMS;
+		else
+			this.fRunIntervalMS = DEFAULT_RUN_INTERVAL_MS;
+	}
+
 
 	public Timestamp scheduleRefresh(RefreshCache pCache, int pSeconds, boolean pLogScheduledAsError, UsersID pBy)
 	{
