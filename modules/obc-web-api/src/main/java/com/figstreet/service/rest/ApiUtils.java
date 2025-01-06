@@ -2,7 +2,9 @@ package com.figstreet.service.rest;
 
 import com.figstreet.core.DateUtil;
 import com.figstreet.service.exception.InvalidEntityException;
+import org.restlet.data.MediaType;
 import org.restlet.data.Status;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -19,8 +21,23 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ApiUtils {
+
+    public static final Variant JSON_VARIANT = new Variant(MediaType.APPLICATION_JSON);
+    public static final Variant XML_VARIANT = new Variant(MediaType.APPLICATION_XML);
+    public static final Variant TEXT_VARIANT = new Variant(MediaType.TEXT_PLAIN);
+    public static final List<Variant> PREFERRED_VARIANT_LIST;
+    static {
+        ArrayList<Variant> vList = new ArrayList<>(3);
+        vList.add(JSON_VARIANT);
+        vList.add(XML_VARIANT);
+        vList.add(TEXT_VARIANT);
+        PREFERRED_VARIANT_LIST = Collections.unmodifiableList(vList);
+    }
 
     public static <E extends ApiData> Document asXmlDocument(ListApiData<E> listApiData) throws ParserConfigurationException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
