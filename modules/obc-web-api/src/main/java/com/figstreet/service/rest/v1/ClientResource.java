@@ -8,20 +8,25 @@ import com.figstreet.data.client.Client;
 import com.figstreet.service.exception.ClientCommsException;
 import com.figstreet.service.exception.NotFoundException;
 import com.figstreet.service.exception.ServerException;
+import com.figstreet.service.rest.RestServerResource;
 import com.figstreet.service.rest.v1.data.ClientApiData;
-import org.restlet.resource.Get;
-import org.restlet.resource.Put;
-import org.restlet.resource.Delete;
-import org.restlet.resource.ServerResource;
+import org.restlet.representation.Representation;
+import org.restlet.resource.*;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
 
-public class ClientResource extends ServerResource {
+public class ClientResource extends RestServerResource {
     public static final String LOGGING_NAME = ClientResource.class.getPackage().getName() + ".ClientResource";
     public static final String URI_PATH = "client";
     public static final String ID_PARAM = "id";
 
     private ClientID fClientID;
+
+    public String getLoggingName() {
+        return LOGGING_NAME;
+    }
 
     @Override
     protected void doInit() {
@@ -29,13 +34,21 @@ public class ClientResource extends ServerResource {
         if (CompareUtil.isEmpty(id)) {
             Logging.warn(LOGGING_NAME, "doInit", "ClientResource called with no ID.");
         } else {
-            Logging.info(LOGGING_NAME, "doInit", "ClientResource called for ID: " + id);
-            this.fClientID = new ClientID(id);
+            try {
+                Logging.info(LOGGING_NAME, "doInit", "ClientResource called for ID: " + id);
+                this.fClientID = new ClientID(id);
+            } catch (Exception e) {
+                String msg = "Error parsing ClientID: " + id;
+                Logging.error(LOGGING_NAME, "doInit", msg, e);
+                throw new ClientCommsException(msg);
+            }
+
         }
     }
 
     @Get
-    public ClientApiData getClient() {
+    public ClientApiData getClient()
+            throws ClientCommsException, ServerException, NotFoundException {
         Logging.debugBegin(LOGGING_NAME, "getClient");
         if (this.fClientID == null) {
             String msg = "Method called with no ClientID.";
@@ -56,12 +69,35 @@ public class ClientResource extends ServerResource {
     }
 
     @Put
-    public void storeClient(Client client) {
+    public void updateClient(Representation entity)
+            throws ClientCommsException, ServerException, NotFoundException {
+        Logging.debugBegin(LOGGING_NAME, "updateClient");
+        String requestText = super.extractRequestText(entity, "updateClient");
+        if (requestText == null) {
+            throw new ClientCommsException("No data sent by client for PUT");
+        }
 
+        //TODO
+    }
+
+    @Post
+    public void addClient(Representation entity)
+            throws ClientCommsException, ServerException, NotFoundException {
+        Logging.debugBegin(LOGGING_NAME, "addClient");
+        String requestText = super.extractRequestText(entity, "addClient");
+        if (requestText == null) {
+            throw new ClientCommsException("No data sent by client for POST");
+        }
     }
 
     @Delete
-    public void removeClient() {
-
+    public void removeClient()
+            throws ClientCommsException, ServerException, NotFoundException {
+        Logging.debugBegin(LOGGING_NAME, "removeClient");
+        if (this.fClientID == null) {
+            String msg = "Method called with no ClientID.";
+            Logging.error(LOGGING_NAME, "removeClient", msg);
+            throw new ClientCommsException(msg);
+        }
     }
 }
