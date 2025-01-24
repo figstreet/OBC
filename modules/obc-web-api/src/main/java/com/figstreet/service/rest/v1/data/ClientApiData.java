@@ -8,10 +8,10 @@ import com.figstreet.core.ClientID;
 import com.figstreet.data.client.Client;
 import com.figstreet.data.users.UsersID;
 import com.figstreet.service.rest.ApiData;
+import com.figstreet.service.rest.ApiUtils;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import java.sql.Timestamp;
 
 @JacksonXmlRootElement(localName = ClientApiData.NODE_NAME)
 @JsonInclude(Include.NON_NULL)
@@ -20,7 +20,7 @@ public class ClientApiData extends ApiData {
     public static final String ACTIVE_NODE = "active";
     public static final String NAME_NODE = "name";
 
-    private Client fClient;
+    private final Client fClient;
 
     public ClientApiData(Client pClient) {
         this.fClient = pClient;
@@ -39,9 +39,9 @@ public class ClientApiData extends ApiData {
     }
 
     @JsonGetter(RECORD_ID_NODE)
-    public ClientID getRecordID()
+    public String getRecordID()
     {
-        return this.fClient.getRecordID();
+        return ClientID.asString(this.fClient.getRecordID());
     }
 
     @Override
@@ -50,47 +50,62 @@ public class ClientApiData extends ApiData {
     }
 
     @Override
-    public Timestamp getAdded()
+    public String getAdded()
     {
-        return this.fClient.getAdded();
+        return ApiUtils.asString(this.fClient.getAdded());
     }
 
     @Override
-    public UsersID getAddedBy()
+    public String getAddedBy()
     {
-        return this.fClient.getAddedBy();
+        return UsersID.asString(this.fClient.getAddedBy());
     }
 
     @Override
-    public Timestamp getLastUpdated()
+    public String getLastUpdated()
     {
-        return this.fClient.getLastUpdated();
+        return ApiUtils.asString(this.fClient.getLastUpdated());
     }
 
     @Override
-    public UsersID getLastUpdatedBy()
+    public String getLastUpdatedBy()
     {
-        return this.fClient.getLastUpdatedBy();
+        return UsersID.asString(this.fClient.getLastUpdatedBy());
     }
 
     @Override
-    public void append(Element element) {
+    public void appendTo(Element element) {
         Document doc = element.getOwnerDocument();
-        Element elmClient = doc.createElement(NODE_NAME);
-        element.appendChild(elmClient);
 
-        Element elmId = doc.createElement(RECORD_ID_NODE);
-        elmId.appendChild(doc.createTextNode(ClientID.asString(this.getRecordID())));
-        elmClient.appendChild(elmId);
+        String id = this.getRecordID();
+        if (id != null) {
+            Element elmId = doc.createElement(RECORD_ID_NODE);
+            elmId.appendChild(doc.createTextNode(id));
+            element.appendChild(elmId);
+        }
 
         Element elmActive = doc.createElement(ACTIVE_NODE);
         elmActive.appendChild(doc.createTextNode(String.valueOf(this.isActive())));
-        elmClient.appendChild(elmActive);
+        element.appendChild(elmActive);
 
-        Element elmName = doc.createElement(NAME_NODE);
-        elmName.appendChild(doc.createTextNode(this.getName()));
-        elmClient.appendChild(elmName);
+        String name = this.getName();
+        if (name != null) {
+            Element elmName = doc.createElement(NAME_NODE);
+            elmName.appendChild(doc.createTextNode(name));
+            element.appendChild(elmName);
+        }
 
-        super.append(elmClient);
+        super.appendTo(element);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Client test1 = new Client("Test 1", UsersID.ADMIN);
+        test1.setRecordID(new ClientID(1234));
+        ClientApiData clientApiData1 = new ClientApiData(test1);
+        System.out.println("As XML:");
+        System.out.println(ApiUtils.asXmlString(clientApiData1));
+        System.out.println("\nAs JSON: ");
+        JacksonRepresentation<ClientApiData> rep = new JacksonRepresentation<>(clientApiData1);
+        System.out.println(rep.getText());
     }
 }

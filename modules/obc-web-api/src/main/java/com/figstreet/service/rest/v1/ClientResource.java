@@ -1,20 +1,21 @@
 package com.figstreet.service.rest.v1;
 
-import com.figstreet.core.ClientID;
-import com.figstreet.core.CompareUtil;
-import com.figstreet.core.Logging;
-import com.figstreet.core.RecordNotExistException;
+import com.figstreet.core.*;
 import com.figstreet.data.client.Client;
+import com.figstreet.data.users.UsersID;
 import com.figstreet.service.exception.ClientCommsException;
 import com.figstreet.service.exception.NotFoundException;
 import com.figstreet.service.exception.ServerException;
+import com.figstreet.service.rest.ApiUtils;
 import com.figstreet.service.rest.RestServerResource;
 import com.figstreet.service.rest.v1.data.ClientApiData;
+import org.json.JSONObject;
+import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.*;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 
 public class ClientResource extends RestServerResource {
@@ -23,6 +24,7 @@ public class ClientResource extends RestServerResource {
     public static final String ID_PARAM = "id";
 
     private ClientID fClientID;
+    private Variant fPreferredVariant;
 
     public String getLoggingName() {
         return LOGGING_NAME;
@@ -42,12 +44,13 @@ public class ClientResource extends RestServerResource {
                 Logging.error(LOGGING_NAME, "doInit", msg, e);
                 throw new ClientCommsException(msg);
             }
-
         }
+
+        this.fPreferredVariant = getPreferredVariant(ApiUtils.PREFERRED_VARIANT_LIST);
     }
 
     @Get
-    public ClientApiData getClient()
+    public Representation getClient()
             throws ClientCommsException, ServerException, NotFoundException {
         Logging.debugBegin(LOGGING_NAME, "getClient");
         if (this.fClientID == null) {
@@ -59,12 +62,27 @@ public class ClientResource extends RestServerResource {
         //TODO - check permissions
 
         try {
-            Client client = Client.getByClientID(this.fClientID);
-            return new ClientApiData(client);
-        } catch (SQLException e) {
-            throw new ServerException(e);
-        } catch (RecordNotExistException e) {
-            throw new NotFoundException("No record found with ID " + this.fClientID);
+//            Client client = Client.getByClientID(this.fClientID);
+            Client client = new Client("Test", UsersID.ADMIN);
+            client.setRecordID(this.fClientID);
+            client.setActive(true);
+            client.setAdded(DateUtil.now());
+            client.setAddedBy(UsersID.ADMIN);
+            ClientApiData apiData = new ClientApiData(client);
+
+            if (ApiUtils.JSON_VARIANT.isCompatible(this.fPreferredVariant)) {
+                return new JacksonRepresentation<ClientApiData>(apiData);
+            }
+
+            return new StringRepresentation(ApiUtils.asXmlString(apiData));
+        }
+//        } catch (SQLException e) {
+//            throw new ServerException(e);
+//        } catch (RecordNotExistException e) {
+//            throw new NotFoundException("No record found with ID " + this.fClientID);
+//        }
+        catch (Exception e) {
+            throw new NotFoundException(e.getMessage());
         }
     }
 

@@ -1,18 +1,14 @@
 package com.figstreet.service.rest.v1.data;
 
-import org.w3c.dom.Document;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import com.figstreet.core.ClientID;
 import com.figstreet.data.client.Client;
 import com.figstreet.data.users.UsersID;
 import com.figstreet.service.rest.ApiUtils;
 import com.figstreet.service.rest.ListApiData;
 
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClientListApiData extends ListApiData<ClientApiData> {
     public static final String LIST_NAME = "clients";
 
@@ -31,7 +27,7 @@ public class ClientListApiData extends ListApiData<ClientApiData> {
 
 
     public static void main(String[] args) throws Exception {
-        Client test1 = new Client("Test 1", UsersID.ADMIN);
+        Client test1 = new Client(null, UsersID.ADMIN);
         test1.setRecordID(new ClientID(1234));
         Client test2 = new Client("Test 2", UsersID.ADMIN);
         test2.setRecordID(new ClientID(2345));
@@ -49,11 +45,17 @@ public class ClientListApiData extends ListApiData<ClientApiData> {
 
         System.out.println("Number of clients: " + clientListApiData.size());
 
-        Document xmlDoc = ApiUtils.asXmlDocument(clientListApiData);
-        Path tester = Paths.get("clientlist.xml");
-        try (OutputStream os = Files.newOutputStream(tester)) {
-            ApiUtils.outputXml(xmlDoc, os);
-        }
+//        Document xmlDoc = ApiUtils.asXmlDocument(clientListApiData);
+//        Path tester = Paths.get("clientList.xml");
+//        try (OutputStream os = Files.newOutputStream(tester)) {
+//            ApiUtils.outputXml(xmlDoc, os);
+//        }
+        System.out.println("As XML: ");
+        System.out.println(ApiUtils.asXmlString(clientListApiData));
+
+        System.out.println("\nAs JSON: ");
+        JacksonRepresentation<ClientListApiData> rep = new JacksonRepresentation<>(clientListApiData);
+        System.out.println(rep.getText());
 
     }
 

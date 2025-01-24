@@ -19,13 +19,16 @@ public abstract class ListApiData<E extends ApiData> extends ArrayList<E> {
     @JsonIgnore
     public abstract String getListNodeName();
 
-    public void append(Document document) {
+    public void appendTo(Document document) {
         Element elmList = document.createElement(this.getListNodeName());
         document.appendChild(elmList);
 
         for (ApiData apiData : this) {
-            if (apiData != null)
-                apiData.append(elmList);
+            if (apiData != null) {
+                Element apiDataElm = document.createElement(apiData.getNodeName());
+                apiData.appendTo(apiDataElm);
+                elmList.appendChild(apiDataElm);
+            }
         }
     }
 

@@ -19,39 +19,46 @@ public abstract class ApiData {
     public abstract String getNodeName();
 
     @JsonGetter(ADDED_TIMESTAMP_NODE)
-    public abstract Timestamp getAdded();
+    public abstract String getAdded();
 
     @JsonGetter(ADDED_BY_NODE)
-    public abstract UsersID getAddedBy();
+    public abstract String getAddedBy();
 
     @JsonGetter(LASTUPDATED_TIMESTAMP_NODE)
-    public abstract Timestamp getLastUpdated();
+    public abstract String getLastUpdated();
 
     @JsonGetter(LASTUPDATED_BY_NODE)
-    public abstract UsersID getLastUpdatedBy();
+    public abstract String getLastUpdatedBy();
 
-    public void append(Element element) {
+
+    public void appendTo(Element element) {
         Document doc = element.getOwnerDocument();
 
-        Element addedTS = doc.createElement(ADDED_TIMESTAMP_NODE);
-        addedTS.appendChild(doc.createTextNode(ApiUtils.asString(this.getAdded())));
-        element.appendChild(addedTS);
+        String addedTimestamp = this.getAdded();
+        if (addedTimestamp != null) {
+            Element addedTS = doc.createElement(ADDED_TIMESTAMP_NODE);
+            addedTS.appendChild(doc.createTextNode(addedTimestamp));
+            element.appendChild(addedTS);
+        }
 
-        Element addedBy = doc.createElement(ADDED_BY_NODE);
-        addedBy.appendChild(doc.createTextNode(UsersID.asString(this.getAddedBy())));
-        element.appendChild(addedBy);
+        String addedUsersID = this.getAddedBy();
+        if (addedUsersID != null) {
+            Element addedBy = doc.createElement(ADDED_BY_NODE);
+            addedBy.appendChild(doc.createTextNode(addedUsersID));
+            element.appendChild(addedBy);
+        }
 
-        Timestamp luTimestamp = this.getLastUpdated();
+        String luTimestamp = this.getLastUpdated();
         if (luTimestamp != null) {
             Element luTS = doc.createElement(LASTUPDATED_TIMESTAMP_NODE);
-            luTS.appendChild(doc.createTextNode(ApiUtils.asString(luTimestamp)));
+            luTS.appendChild(doc.createTextNode(luTimestamp));
             element.appendChild(luTS);
         }
 
-        UsersID luUserID = this.getLastUpdatedBy();
+        String luUserID = this.getLastUpdatedBy();
         if (luUserID != null) {
             Element luBy = doc.createElement(LASTUPDATED_BY_NODE);
-            luBy.appendChild(doc.createTextNode(UsersID.asString(luUserID)));
+            luBy.appendChild(doc.createTextNode(luUserID));
             element.appendChild(luBy);
         }
     }

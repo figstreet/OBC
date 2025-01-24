@@ -2,13 +2,16 @@ package com.figstreet.service.rest;
 
 import com.figstreet.core.DateUtil;
 import com.figstreet.service.exception.InvalidEntityException;
+import org.json.JSONObject;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
+import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,6 +22,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -39,14 +44,43 @@ public class ApiUtils {
         PREFERRED_VARIANT_LIST = Collections.unmodifiableList(vList);
     }
 
+    public static <E extends ApiData> Document asXmlDocument(E apiData)
+            throws ParserConfigurationException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element element = doc.createElement(apiData.getNodeName());
+        doc.appendChild(element);
+        apiData.appendTo(element);
+        return doc;
+    }
+
+    public static <E extends ApiData> String asXmlString(E apiData)
+            throws ParserConfigurationException, TransformerException, IOException {
+        Document xmlDoc = asXmlDocument(apiData);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            outputXml(xmlDoc, baos);
+            return baos.toString("UTF-8");
+        }
+    }
+
     public static <E extends ApiData> Document asXmlDocument(ListApiData<E> listApiData) throws ParserConfigurationException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
 
-        listApiData.append(doc);
+        listApiData.appendTo(doc);
 
         return doc;
+    }
+
+    public static <E extends ApiData> String asXmlString(ListApiData<E> listApiData)
+            throws ParserConfigurationException, TransformerException, IOException {
+        Document xmlDoc = asXmlDocument(listApiData);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            outputXml(xmlDoc, baos);
+            return baos.toString("UTF-8");
+        }
     }
 
     public static void outputXml(Document document, OutputStream output)
@@ -62,6 +96,7 @@ public class ApiUtils {
 
         transformer.transform(source, result);
     }
+
 
     public static String asString(Timestamp timestamp) {
         return DateUtil.formatTimestamp(timestamp, DateUtil.ISO8601_TIMESTAMP_FORMAT);
