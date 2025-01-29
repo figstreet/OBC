@@ -9,17 +9,20 @@ import com.figstreet.service.exception.ServerException;
 import com.figstreet.service.rest.ApiUtils;
 import com.figstreet.service.rest.RestServerResource;
 import com.figstreet.service.rest.v1.data.ClientApiData;
-import org.json.JSONObject;
 import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.*;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.sql.SQLException;
 
-public class ClientResource extends RestServerResource {
-    public static final String LOGGING_NAME = ClientResource.class.getPackage().getName() + ".ClientResource";
+
+public class ClientResourceV1 extends RestServerResource {
+    public static final String LOGGING_NAME = ClientResourceV1.class.getPackage().getName() + ".ClientResource";
     public static final String URI_PATH = "client";
     public static final String ID_PARAM = "id";
 
@@ -62,12 +65,7 @@ public class ClientResource extends RestServerResource {
         //TODO - check permissions
 
         try {
-//            Client client = Client.getByClientID(this.fClientID);
-            Client client = new Client("Test", UsersID.ADMIN);
-            client.setRecordID(this.fClientID);
-            client.setActive(true);
-            client.setAdded(DateUtil.now());
-            client.setAddedBy(UsersID.ADMIN);
+            Client client = Client.getByClientID(this.fClientID);
             ClientApiData apiData = new ClientApiData(client);
 
             if (ApiUtils.JSON_VARIANT.isCompatible(this.fPreferredVariant)) {
@@ -75,14 +73,12 @@ public class ClientResource extends RestServerResource {
             }
 
             return new StringRepresentation(ApiUtils.asXmlString(apiData));
-        }
-//        } catch (SQLException e) {
-//            throw new ServerException(e);
-//        } catch (RecordNotExistException e) {
-//            throw new NotFoundException("No record found with ID " + this.fClientID);
-//        }
-        catch (Exception e) {
-            throw new NotFoundException(e.getMessage());
+        } catch (SQLException e) {
+            throw new ServerException(e);
+        } catch (RecordNotExistException e) {
+            throw new NotFoundException("No record found with ID " + this.fClientID);
+        } catch (ParserConfigurationException | TransformerException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

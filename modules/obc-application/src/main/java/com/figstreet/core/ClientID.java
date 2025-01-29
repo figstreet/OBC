@@ -19,8 +19,7 @@ public class ClientID extends IntDataID
 		super(CLIENTID_DESCRIPTOR);
 	}
 
-	public ClientID(int pValue)
-	{
+	public ClientID(Integer pValue) {
 		super(pValue, CLIENTID_DESCRIPTOR);
 	}
 

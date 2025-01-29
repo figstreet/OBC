@@ -10,10 +10,10 @@ public class RestletApplicationV1 extends Application {
     public Restlet createInboundRoot() {
         Router router = new Router(getContext());
 
-        router.attach( API_URL_PREFIX + ClientResource.URI_PATH + "/{"
-                + ClientResource.ID_PARAM + "}", ClientResource.class);
-        router.attach(API_URL_PREFIX + ClientListResource.URI_PATH,
-                ClientListResource.class);
+        router.attach( API_URL_PREFIX + ClientResourceV1.URI_PATH + "/{"
+                + ClientResourceV1.ID_PARAM + "}", ClientResourceV1.class);
+        router.attach(API_URL_PREFIX + ClientListResourceV1.URI_PATH,
+                ClientListResourceV1.class);
         router.attach(API_URL_PREFIX + PingResource.URI_PATH,
                 PingResource.class);
 

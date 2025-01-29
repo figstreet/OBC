@@ -3,7 +3,9 @@ package com.figstreet.service.rest;
 import com.figstreet.core.DateUtil;
 import com.figstreet.service.exception.InvalidEntityException;
 import org.json.JSONObject;
+import org.restlet.Request;
 import org.restlet.data.MediaType;
+import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Variant;
@@ -127,6 +129,13 @@ public class ApiUtils {
         if (entity == null) {
             throw new InvalidEntityException("No input entity");
         }
+    }
+
+
+    public static String findQueryParameter(ServerResource resource, String paramName, String defaultValue) {
+        Request request = resource.getRequest();
+        Reference reference = request.getResourceRef();
+        return reference.getQueryAsForm().getFirstValue(paramName, true, defaultValue);
     }
 
 }
